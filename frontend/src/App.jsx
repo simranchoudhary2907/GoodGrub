@@ -24,6 +24,8 @@ import ContactUs from './pages/ContactUs'
 import VolunteerSignUp from './pages/VolunteerSignUp'
 import VolunteerFAQs from './pages/VolunteerFAQs'
 
+// import BackendTest from './pages/BackendTest'
+
 function App() {
   return (
     <>
@@ -76,6 +78,9 @@ function App() {
         <Route path="/volunteer-signup" element={<VolunteerSignUp />} />
         <Route path="/volunteer-faqs" element={<VolunteerFAQs />} />
         <Route path="/test" element={<div className="p-8 text-center"><h1 className="text-2xl">Test Page Works!</h1></div>} />
+       
+        {/* <Route path="/test" element={<BackendTest />} /> */}
+      
       </Routes>
     </>
   )

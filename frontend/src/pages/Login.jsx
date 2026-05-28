@@ -1,3 +1,5 @@
+import API from "../api";
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -15,11 +17,33 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt:", formData);
-  };
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   // Handle login logic here
+  //   console.log("Login attempt:", formData);
+  // };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await API.post("/api/login", {
+      email: formData.email,
+      password: formData.password
+    });
+
+    console.log(res.data);
+    alert(res.data.message);
+
+    // optional: navigate after login
+    // navigate("/dashboard");
+
+  } catch (err) {
+    console.log(err);
+    alert("Login failed");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
