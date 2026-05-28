@@ -28,7 +28,9 @@ MongoDB / MySQL database
 JWT authentication
 Real-time notifications
 Deployment (Vercel + Render)
+
 📁 Project Structure
+
 goodgrub-learning/
 │
 ├── backend/
@@ -43,24 +45,25 @@ goodgrub-learning/
 │   │   └── App.jsx
 │
 └── README.md
+
+
 ⚙️ How to Run Project Locally
+
 1️⃣ Clone repository
 git clone https://github.com/your-username/goodgrub.git
+
 2️⃣ Run Backend
 cd backend
 py app.py
+Backend runs at: http://127.0.0.1:5000
 
-Backend runs at:
 
-http://127.0.0.1:5000
 3️⃣ Run Frontend
 cd frontend
 npm install
 npm run dev
 
-Frontend runs at:
-
-http://localhost:5173
+Frontend runs at: http://localhost:5173
 🔗 API Connection
 
 Frontend communicates with backend using:
