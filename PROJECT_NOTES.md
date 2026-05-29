@@ -74,3 +74,18 @@ git push -u origin main
 # Check using Git command
 git log --oneline
 
+
+👉 user_auth = ek container/folder
+👉 iske andar alag-alag files = alag responsibilities
+
+user_auth/
+│
+├── migrations/        ← database changes history
+│   └── __init__.py
+│
+├── __init__.py        ← Python package marker
+├── admin.py           ← admin panel config
+├── apps.py            ← app config
+├── models.py          ← database tables
+├── tests.py           ← testing code
+└── views.py           ← main logic (APIs/functions)

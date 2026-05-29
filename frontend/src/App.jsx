@@ -1,7 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import VerifyOtp from './pages/VerifyOtp'
+import ForgotPassword from './pages/ForgotPassword'
+import VerifyResetOtp from "./pages/VerifyResetOtp";
 import Home from './pages/Home'
 import ActiveDonation from './pages/ActiveDonation'
 import Dashboard from './pages/Dashboard'
@@ -24,6 +25,7 @@ import ContactUs from './pages/ContactUs'
 import VolunteerSignUp from './pages/VolunteerSignUp'
 import VolunteerFAQs from './pages/VolunteerFAQs'
 
+
 // import BackendTest from './pages/BackendTest'
 
 function App() {
@@ -33,7 +35,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/verify-otp" element={<VerifyOtp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/verify-reset-otp" element={<VerifyResetOtp />} />
         <Route path="/active-donation" element={
           <ProtectedRoute>
             <ActiveDonation />

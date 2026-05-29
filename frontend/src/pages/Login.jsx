@@ -27,7 +27,7 @@ export default function Login() {
   e.preventDefault();
 
   try {
-    const res = await API.post("/api/login", {
+    const res = await API.post("/login", {
       email: formData.email,
       password: formData.password
     });
@@ -107,9 +107,17 @@ export default function Login() {
           <div className="mt-6 text-center space-y-3">
             <div>
               <span className="text-gray-600">Forgot your password? </span>
-              <button className="text-orange-600 hover:text-orange-700 font-medium">
+              {/* <button className="text-orange-600 hover:text-orange-700 font-medium">
                 Forgot Password?
+              </button> */}
+
+                <button
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-orange-600 hover:text-orange-700 font-medium"
+                >
+                  Forgot Password?
               </button>
+
             </div>
             <div>
               <span className="text-gray-600">Don't have an account? </span>
