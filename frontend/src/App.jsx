@@ -2,7 +2,8 @@ import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import ForgotPassword from './pages/ForgotPassword'
-import VerifyResetOtp from "./pages/VerifyResetOtp";
+// import VerifyResetOtp from "./pages/VerifyResetOtp";
+import ForgotPasswordOtp from "./pages/ForgotPasswordOtp";
 import Home from './pages/Home'
 import ActiveDonation from './pages/ActiveDonation'
 import Dashboard from './pages/Dashboard'
@@ -36,7 +37,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verify-reset-otp" element={<VerifyResetOtp />} />
+        {/* <Route path="/verify-reset-otp" element={<VerifyResetOtp />} /> */}
+        <Route path="/verify-reset-otp" element={<ForgotPasswordOtp />} />
         <Route path="/active-donation" element={
           <ProtectedRoute>
             <ActiveDonation />

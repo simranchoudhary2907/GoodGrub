@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-export default function VerifyResetOtp() {
+export default function ForgotPasswordOtp() {
 
   const location = useLocation();
   const navigate = useNavigate();
