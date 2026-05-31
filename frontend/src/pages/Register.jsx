@@ -28,17 +28,37 @@ export default function Register() {
       return;
     }
 
+    // try {
+    //   await API.post("/register", {
+    //     username: form.fullName,
+    //     email: form.email,
+    //     password: form.password,
+    //   });
+    //   setMsg("");
+    //   navigate("/verify-otp", { state: { email: form.email } });
+    // } catch (err) {
+    //   setMsg(err.response?.data?.detail || "Error");
+    // }
+
     try {
-      await API.post("/register", {
-        username: form.fullName,
-        email: form.email,
-        password: form.password,
-      });
-      setMsg("");
-      navigate("/verify-otp", { state: { email: form.email } });
-    } catch (err) {
-      setMsg(err.response?.data?.detail || "Error");
-    }
+  await API.post("/api/auth/send-otp/", {
+    email: form.email,
+  });
+
+  setMsg("");
+
+  navigate("/verify-otp", {
+    state: {
+      email: form.email,
+      fullName: form.fullName,
+      password: form.password,
+    },
+  });
+
+} catch (err) {
+  setMsg("Failed to send OTP");
+}
+
   };
 
   return (
