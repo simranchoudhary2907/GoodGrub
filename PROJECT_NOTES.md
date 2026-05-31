@@ -1,91 +1,121 @@
+🍱 GoodGrub – Smart Surplus Food Redistribution Platform
 
-# FINAL PROJECT STRUCTURE
+A zero-waste campus system to redistribute surplus food efficiently using real-time coordination, OTP authentication, and smart notifications.
 
-Good_Grub/
+📁 Project Structure
+GoodGrub/
 │
-├── backend/                          # Flask (API only)
-│   ├── app.py                        # Main Flask entry point file (runs server -> Starts backend + connects routes)
-│   ├── config.py                     # DB + secret configs(Keeps settings separate)
+├── backend/                          # Django Backend (API Layer)
 │   │
-│   ├── routes/                      # API endpoints(To separate different APIs (clean code))
-│   │   ├── auth_routes.py           # login/register
-│   │   ├── food_routes.py           # surplus food listing
-│   │   ├── user_routes.py           # user profile
+│   ├── config/                       # Project Configuration
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── wsgi.py
+│   │   └── asgi.py
 │   │
-│   ├── models/                      # database tables
-│   │   ├── user_model.py
-│   │   ├── food_model.py
+│   ├── user_auth/                   # Authentication System
+│   │   ├── migrations/
+│   │   ├── models.py                # OTP Model
+│   │   ├── views.py                 # Send & Verify OTP APIs
+│   │   ├── urls.py                  # Auth Routes
+│   │   └── admin.py
 │   │
-│   ├── database/                   # DB setup
-│   │   ├── db.py                   # connection file
-│   │
-│   ├── static/                     # OPTIONAL (only for uploads) -> CSS/JS/images (if needed)
-│   │   ├── food_images/
-│   │
-│   └── venv/                      # virtual environment
+│   ├── manage.py
+│   ├── db.sqlite3
+│   ├── .env                         # Email credentials (NOT pushed)
+│   └── venv/
 │
-│
-├── frontend/                      # React (UI)
-│   ├── public/
-│   │   ├── index.html
+├── frontend/                         # React Frontend (UI Layer)
 │   │
 │   ├── src/
-│   │   ├── assets/               # images/icons
-│   │   ├── components/           # reusable UI parts
-│   │   │   ├── Navbar.js
-│   │   │   ├── Footer.js
-│   │   │   ├── FoodCard.js
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx
+│   │   │   └── ProtectedRoute.jsx
 │   │   │
-│   │   ├── pages/               # full pages
-│   │   │   ├── Home.js
-│   │   │   ├── Login.js
-│   │   │   ├── Register.js
-│   │   │   ├── Dashboard.js
-│   │   │   ├── AddFood.js
-│   │   │
-│   │   ├── api/                # connect Flask APIs
-│   │   │   ├── auth.js
-│   │   │   ├── food.js
+│   │   ├── pages/
+│   │   │   ├── Home.jsx
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── VerifyOtp.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   ├── ForgotPasswordOtp.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── DonateFood.jsx
+│   │   │   ├── ClaimFood.jsx
+│   │   │   ├── NGOs.jsx
+│   │   │   └── Profile.jsx
 │   │
-│   │   ├── App.js
-│   │   ├── index.js
+│   │   ├── api.js
+│   │   ├── App.jsx
+│   │   └── main.jsx
 │   │
 │   ├── package.json
-│
-├── requirements.txt              # List of Python libraries(So project can be installed anywher)
+│   └── vite.config.js
 │
 ├── README.md
-
-
-
-Backend folder = ek room (kitchen)
-Frontend folder = ek room (living room)
-Root requirements.txt = house ka master electricity bill list
-
-
-
-# Just run these 3 commands now
-
-git add .
-git commit -m "Initial frontend commit"
-git branch -M main
-git push -u origin main
-
-# Check using Git command
-git log --oneline
-
-
-👉 user_auth = ek container/folder
-👉 iske andar alag-alag files = alag responsibilities
-
+├── .gitignore
+└── project_noted.md
+🔐 Authentication Flow
+Register Page
+   ↓
+Send OTP API (Backend)
+   ↓
+Email OTP Sent (SMTP Gmail)
+   ↓
+Verify OTP Page (Frontend)
+   ↓
+Verify OTP API (Backend)
+   ↓
+User Verified
+   ↓
+Login Page
+   ↓
+JWT Authentication
+   ↓
+Dashboard Access Granted
+🧠 Backend Architecture (Django App)
 user_auth/
 │
-├── migrations/        ← database changes history
-│   └── __init__.py
-│
-├── __init__.py        ← Python package marker
-├── admin.py           ← admin panel config
-├── apps.py            ← app config
-├── models.py          ← database tables
-├── tests.py           ← testing code
-└── views.py           ← main logic (APIs/functions)
+├── models.py      → OTP storage + validation
+├── views.py       → Send OTP + Verify OTP logic
+├── urls.py        → API routing
+├── admin.py       → Django admin panel
+└── migrations/    → Database history tracking
+⚙️ Environment Variables
+
+Create .env file inside backend/:
+
+EMAIL_HOST_USER=your_email@gmail.com
+EMAIL_HOST_PASSWORD=your_app_password
+
+⚠️ Never upload .env to GitHub
+
+Check ignore status:
+
+git check-ignore backend/.env
+
+Expected output:
+
+backend/.env
+🚀 Git Workflow
+git add .
+git commit -m "message"
+git push origin main
+
+Check history:
+
+git log --oneline
+
+🎯 System Overview (Visual Flow)
+Frontend (React)
+     ↓
+Axios API Calls
+     ↓
+Backend (Django REST API)
+     ↓
+OTP + JWT Authentication Layer
+     ↓
+Database (SQLite / PostgreSQL)
+     ↓
+Email Service (SMTP Gmail)
