@@ -90,7 +90,7 @@ goodgrub-learning/
 ### 1️⃣ Clone Repository
 
 ```bash
-git clone <your-repository-url>
+git clone <(https://github.com/simranchoudhary2907/GoodGrub)>
 cd goodgrub-learning
 ```
 
