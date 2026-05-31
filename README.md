@@ -1,40 +1,76 @@
-📌 Good_Grub – Smart Surplus Food Redistribution Platform
-🌍 Overview
+# 📌 Good_Grub – Smart Surplus Food Redistribution Platform
 
-Good_Grub is a full-stack web application designed to reduce food waste and connect surplus food providers with NGOs, volunteers, and beneficiaries.
-It helps campuses and communities efficiently redistribute excess food in real-time.
+## 🌍 Overview
 
-🚀 Features
-👤 User Registration & Login system
-🔐 Authentication (frontend + backend connected)
-🍲 Food Donation Posting system
-📍 Location-based food sharing
-🏢 NGO & Beneficiary management
-📊 Dashboard for tracking activities
-📬 Contact & support system
-🔔 Real-time notifications (planned/expanding)
-🛠️ Tech Stack
-Frontend:
-React.js
-React Router DOM
-Axios
-Tailwind CSS
-Backend:
-Python
-Flask
-Flask-CORS
-Future Enhancements:
-MongoDB / MySQL database
-JWT authentication
-Real-time notifications
-Deployment (Vercel + Render)
+Good_Grub is a full-stack web application designed to reduce food waste by connecting surplus food providers with NGOs, volunteers, and beneficiaries.
 
-📁 Project Structure
+The platform helps campuses and communities efficiently redistribute excess food, coordinate pickups, and track food donations in real time.
 
+---
+
+## 🚀 Features
+
+### 👤 Authentication
+- User Registration
+- User Login
+- JWT Authentication
+- Email OTP Verification
+- Forgot Password Flow
+- Protected Routes
+
+### 🍲 Food Management
+- Food Donation Posting
+- Food Claiming System
+- Active Donations Tracking
+- Food Sharing Coordination
+
+### 🏢 Community Support
+- NGO Directory
+- Beneficiary Management
+- Volunteer Registration
+- Community Outreach Features
+
+### 📊 Dashboard & Tracking
+- User Dashboard
+- Activity Logs
+- Profile Management
+- Donation Monitoring
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React.js
+- React Router DOM
+- Axios
+- Tailwind CSS
+- Vite
+
+### Backend
+- Python
+- Django
+- Django REST Framework
+- Simple JWT
+- SQLite (Development)
+
+### Authentication
+- JWT Tokens
+- Email OTP Verification
+- Gmail SMTP Integration
+
+---
+
+## 📁 Project Structure
+
+```text
 goodgrub-learning/
 │
 ├── backend/
-│   ├── app.py
+│   ├── config/
+│   ├── user_auth/
+│   ├── manage.py
+│   ├── db.sqlite3
 │   └── ...
 │
 ├── frontend/
@@ -45,56 +81,121 @@ goodgrub-learning/
 │   │   └── App.jsx
 │
 └── README.md
+```
 
+---
 
-⚙️ How to Run Project Locally
+## ⚙️ Local Setup
 
-1️⃣ Clone repository
-git clone https://github.com/your-username/goodgrub.git
+### 1️⃣ Clone Repository
 
-2️⃣ Run Backend
+```bash
+git clone <your-repository-url>
+cd goodgrub-learning
+```
+
+### 2️⃣ Backend Setup
+
+```bash
 cd backend
-py app.py
-Backend runs at: http://127.0.0.1:5000
 
+source venv/Scripts/activate
 
-3️⃣ Run Frontend
+pip install -r requirements.txt
+
+python manage.py migrate
+
+python manage.py runserver
+```
+
+Backend:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+### 3️⃣ Frontend Setup
+
+```bash
 cd frontend
+
 npm install
+
 npm run dev
+```
 
-Frontend runs at: http://localhost:5173
-🔗 API Connection
+Frontend:
 
-Frontend communicates with backend using:
+```text
+http://localhost:5173
+```
 
-baseURL: "http://127.0.0.1:5000/"
+---
 
-Example API:
+## 🔗 API Endpoints
 
-/api/test
-/api/register
-/api/login
-🎯 Current Progress
+### Authentication
 
-✔ Frontend pages created
-✔ Backend Flask setup
-✔ API connection established
-✔ Login/Register structure implemented
-✔ Axios integration done
+```text
+POST /api/auth/send-otp/
+POST /api/auth/verify-otp/
 
-🚧 Work in Progress
-Authentication validation (login/register logic)
-Database integration
-Role-based access (NGO / User / Volunteer)
-Food donation tracking system
-👩‍💻 Developer
-Simran Kumari
-Passionate about full-stack development & real-world problem solving
-⭐ Future Goal
+POST /api/register/
+POST /api/login/
+```
 
-To build a complete zero-waste food redistribution platform for campuses and communities.
+---
 
-📌 Note
+## 🎯 Current Progress
 
-This project is currently in active development.
+### ✅ Completed
+
+- React Frontend Setup
+- Django Backend Setup
+- Django REST Framework Integration
+- JWT Authentication Setup
+- Email OTP Sending
+- OTP Verification API
+- Gmail SMTP Configuration
+- Login & Register UI
+- Protected Routes
+- Multiple Core Pages Implemented
+
+### 🚧 In Progress
+
+- Signup OTP Frontend Integration
+- Complete Registration Flow
+- Food Donation Backend APIs
+- NGO Management System
+- Volunteer Workflow
+- Analytics Dashboard
+
+### 🔮 Planned Features
+
+- Real-Time Notifications
+- Advanced Analytics
+- Campus Event Integration
+- Surplus Food Recommendations
+- Production Deployment
+
+---
+
+## 👩‍💻 Developer
+
+**Simran Kumari**
+
+Passionate about Full-Stack Development, Problem Solving, and Building Real-World Impact Projects.
+
+---
+
+## ⭐ Project Goal
+
+Build a complete zero-waste food redistribution platform that helps campuses and communities reduce food waste while supporting people in need.
+
+---
+
+## 📌 Status
+
+This project is actively under development and continuously improving.
