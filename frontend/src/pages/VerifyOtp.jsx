@@ -10,6 +10,8 @@ export default function VerifyOtp() {
   const navigate = useNavigate();
 
   const email = location.state?.email || "";
+  const fullName = location.state?.fullName || "";
+  const password = location.state?.password || "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,10 +22,23 @@ export default function VerifyOtp() {
         otp,
       });
 
+      // if (res.data.success) {
+      //   alert("OTP verified successfully!");
+      //   navigate("/login");
+      // }
+
       if (res.data.success) {
-        alert("OTP verified successfully!");
-        navigate("/login");
-      }
+
+      await API.post("/api/auth/register/", {
+        fullName,
+        email,
+        password,
+  });
+
+  alert("Registration Successful!");
+  navigate("/login");
+}
+
     } catch (err) {
       setMsg("Invalid OTP");
     }
