@@ -39,9 +39,21 @@ export default function VerifyOtp() {
   navigate("/login");
 }
 
-    } catch (err) {
-      setMsg("Invalid OTP");
-    }
+    } 
+    // catch (err) {
+    //   setMsg("Invalid OTP");
+
+    catch (err) {
+  console.log("REGISTER ERROR:", err);
+  console.log("DATA:", err.response?.data);
+  console.log("STATUS:", err.response?.status);
+
+  setMsg(
+    err.response?.data?.message ||
+    "Registration failed"
+  );
+
+}
   };
 
   return (

@@ -55,8 +55,20 @@ export default function Register() {
     },
   });
 
-} catch (err) {
-  setMsg("Failed to send OTP");
+}
+// catch (err) {
+//   setMsg("Failed to send OTP");
+// }
+
+catch (err) {
+  console.log("ERROR:", err);
+  console.log("DATA:", err.response?.data);
+  console.log("STATUS:", err.response?.status);
+
+  setMsg(
+    JSON.stringify(err.response?.data) ||
+    "Failed to send OTP"
+  );
 }
 
   };
