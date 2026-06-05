@@ -43,14 +43,47 @@ def send_otp(request):
         "message": "OTP sent successfully"
     })
 
+# @api_view(['POST'])
+# def verify_otp(request):
+#     email = request.data.get("email")
+#     otp = request.data.get("otp")
+
+#     try:
+#         user = User.objects.get(email=email)
+#     except User.DoesNotExist:
+#         return Response({
+#             "success": False,
+#             "message": "User not found"
+#         }, status=404)
+
+#     otp_exists = OTP.objects.filter(
+#         user=user,
+#         code=otp
+#     ).exists()
+
+#     if otp_exists:
+#         return Response({
+#             "success": True,
+#             "message": "OTP verified successfully"
+#         })
+
+#     return Response({
+#         "success": False,
+#         "message": "Invalid OTP"
+#     }, status=400)
+
 @api_view(['POST'])
 def verify_otp(request):
     email = request.data.get("email")
     otp = request.data.get("otp")
 
+    print("EMAIL:", email)
+    print("OTP RECEIVED:", otp)
+
     try:
         user = User.objects.get(email=email)
     except User.DoesNotExist:
+        print("USER NOT FOUND")
         return Response({
             "success": False,
             "message": "User not found"
@@ -60,6 +93,8 @@ def verify_otp(request):
         user=user,
         code=otp
     ).exists()
+
+    print("OTP EXISTS:", otp_exists)
 
     if otp_exists:
         return Response({
@@ -71,3 +106,30 @@ def verify_otp(request):
         "success": False,
         "message": "Invalid OTP"
     }, status=400)
+
+@api_view(['POST'])
+def register(request):
+    print("REGISTER API CALLED")
+    
+    full_name = request.data.get("fullName")
+    email = request.data.get("email")
+    password = request.data.get("password")
+
+    try:
+        user = User.objects.get(username=email)
+
+        user.first_name = full_name
+        user.email = email
+        user.set_password(password)
+        user.save()
+
+        return Response({
+            "success": True,
+            "message": "User registered successfully"
+        })
+
+    except User.DoesNotExist:
+        return Response({
+            "success": False,
+            "message": "User not found"
+        }, status=404)
