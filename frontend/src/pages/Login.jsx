@@ -27,7 +27,7 @@ export default function Login() {
   e.preventDefault();
 
   try {
-    const res = await API.post("/login", {
+    const res = await API.post("/login/", {
       email: formData.email,
       password: formData.password
     });
@@ -60,7 +60,11 @@ export default function Login() {
           </div>
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          {/* <form onSubmit={handleSubmit} className="space-y-6"> */}
+
+          <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
+
+
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -70,6 +74,7 @@ export default function Login() {
                 id="email"
                 name="email"
                 type="email"
+                autoComplete="off"
                 required
                 value={formData.email}
                 onChange={handleChange}
@@ -87,6 +92,7 @@ export default function Login() {
                 id="password"
                 name="password"
                 type="password"
+                autoComplete="new-password"
                 required
                 value={formData.password}
                 onChange={handleChange}

@@ -119,3 +119,13 @@ OTP + JWT Authentication Layer
 Database (SQLite / PostgreSQL)
      ↓
 Email Service (SMTP Gmail)
+
+
+# You can check all registered users from the Django shell.
+# You already did this once:
+
+py manage.py shell
+
+# Then:
+from django.contrib.auth.models import User
+User.objects.all()
