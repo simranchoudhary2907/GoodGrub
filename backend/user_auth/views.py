@@ -234,10 +234,18 @@ def login_user(request):
 
     print("AUTH RESULT:", user)
 
+    # if user:
+    #     return Response({
+    #         "success": True,
+    #         "message": "Login successful"
+    #     })
+
     if user:
         return Response({
             "success": True,
-            "message": "Login successful"
+            "message": "Login successful",
+            "username": user.first_name,
+            "email": user.email
         })
 
     return Response({

@@ -48,7 +48,10 @@ function App() {
             <ActiveDonation />
           </ProtectedRoute>
         } />
-        <Route path="/dashboard" element={<Dashboard />} />
+        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+
+        <Route path="/dashboard" element={ <ProtectedRoute> <Dashboard /> </ProtectedRoute> }/>
+
         <Route path="/about" element={
           <ProtectedRoute>
             <About />
@@ -74,15 +77,18 @@ function App() {
             <Profile />
           </ProtectedRoute>
         } />
-        <Route path="/claim-food" element={<ClaimFood />} />
-        <Route path="/donate-food" element={<DonateFood />} />
+        <Route path="/claim-food" element={<ProtectedRoute> <ClaimFood /> </ProtectedRoute>} />
+        {/* <Route path="/donate-food" element={<DonateFood /> } /> */}
+
+        <Route path="/donate-food" element={ <ProtectedRoute> <DonateFood /> </ProtectedRoute> }/>
+
         <Route path="/ngos" element={<NGOs />} />
         <Route path="/ngo-profile" element={<NGOProfile />} />
         <Route path="/campus-reminder" element={<CampusReminder />} />
         <Route path="/beneficiary" element={<Beneficiary />} />
         <Route path="/beneficiary/:id" element={<BeneficiaryDetail />} />
-        <Route path="/provide-support" element={<ProvideSupport />} />
-        <Route path="/activity-log" element={<ActivityLog />} />
+        <Route path="/provide-support" element={ <ProtectedRoute> <ProvideSupport /> </ProtectedRoute> } />
+        <Route path="/activity-log" element={ <ProtectedRoute> <ActivityLog /> </ProtectedRoute> } />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/volunteer-signup" element={<VolunteerSignUp />} />
         <Route path="/volunteer-faqs" element={<VolunteerFAQs />} />

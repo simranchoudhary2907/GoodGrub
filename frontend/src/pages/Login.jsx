@@ -23,8 +23,38 @@ export default function Login() {
   //   console.log("Login attempt:", formData);
   // };
 
-  const handleSubmit = async (e) => {
+  // const handleSubmit = async (e) => {
+  // e.preventDefault();
+
+  // console.log("Submitting login", formData);
+
+  // try {
+  //   const res = await API.post("/login/", {
+  //     email: formData.email,
+  //     password: formData.password
+  //   });
+
+  //   console.log(res.data);
+  //   alert(res.data.message);
+
+    // optional: navigate after login
+    // navigate("/dashboard");
+
+  // } catch (err) {
+  //   console.log(err);
+  //   alert("Login failed");
+
+//   }catch (err) {
+//     console.log("LOGIN ERROR:", err);
+//     console.log("RESPONSE:", err.response);
+//     alert("Login failed");
+//   }
+// };
+
+const handleSubmit = async (e) => {
   e.preventDefault();
+
+  console.log("Submitting login", formData);
 
   try {
     const res = await API.post("/login/", {
@@ -33,14 +63,22 @@ export default function Login() {
     });
 
     console.log(res.data);
-    alert(res.data.message);
 
-    // optional: navigate after login
-    // navigate("/dashboard");
+    localStorage.setItem("user", JSON.stringify(res.data));
+
+    alert("Login successful!");
+
+    navigate("/");
 
   } catch (err) {
-    console.log(err);
-    alert("Login failed");
+    console.log("LOGIN ERROR:", err);
+    console.log("RESPONSE:", err.response);
+
+    if (err.response) {
+      alert(err.response.data.message);
+    } else {
+      alert("Server connection failed");
+    }
   }
 };
 

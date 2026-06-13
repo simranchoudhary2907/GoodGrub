@@ -9,6 +9,11 @@ const Header = () => {
   const [activeItem, setActiveItem] = useState("home");
   const [openDropdown, setOpenDropdown] = useState(null); // which dropdown is open
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
+
   const headerRef = useRef(null);
 
   // Auto-highlight based on scroll position and URL hash
@@ -159,7 +164,7 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-6">
-              <a
+              {/* <a
                 href="#home"
                 onClick={() => setActiveItem("home")}
                 className={`${
@@ -167,6 +172,20 @@ const Header = () => {
                     ? "text-white font-semibold"
                     : "text-white/85 font-medium hover:text-white"
                 } px-3 py-2 text-sm transition-colors`}
+              >
+                Home
+              </a> */}
+              
+              <a
+                onClick={() => {
+                  setActiveItem("home");
+                  navigate("/");
+                }}
+                className={`${
+                  activeItem === "home"
+                    ? "text-white font-semibold"
+                    : "text-white/85 font-medium hover:text-white"
+                } px-3 py-2 text-sm transition-colors cursor-pointer`}
               >
                 Home
               </a>
@@ -310,14 +329,42 @@ const Header = () => {
           </nav>
 
           {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* <div className="hidden md:block">
             <button 
               onClick={() => navigate("/login")} 
               className="bg-white text-orange-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
             >
               LOG IN
             </button>
-          </div>
+          </div> */}
+          <div className="hidden md:block">
+  {user ? (
+    <div className="flex items-center gap-3">
+      <span className="text-white font-medium">
+        {/* Hi, {user.username} */}
+        Hi, {user.username.split(" ")[0]}
+      </span>
+
+      <button
+        onClick={() => {
+          localStorage.removeItem("user");
+          setUser(null);
+          navigate("/");
+        }}
+        className="bg-white text-orange-600 px-4 py-2 rounded-lg font-semibold"
+      >
+        Logout
+      </button>
+    </div>
+  ) : (
+    <button
+      onClick={() => navigate("/login")}
+      className="bg-white text-orange-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-100 transition-colors cursor-pointer"
+    >
+      LOG IN
+    </button>
+  )}
+</div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
