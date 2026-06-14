@@ -1,7 +1,65 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const NGOProfile = () => {
+  const { id } = useParams();
+
+  const ngoData = {
+  1: {
+    name: "Community Harvest Hub",
+    description:
+      "Dedicated to combating food insecurity by distributing fresh, nutritious food to underserved communities and empowering youth through educational programs.",
+    contact: "Maria Rodriguez",
+    email: "maria.r@chhub.org",
+    phone: "+1-234-567-8901",
+    address: "123 Green Valley Lane, Eco City, 54321",
+  },
+
+  2: {
+    name: "Nourish Neighbors Collective",
+    description:
+      "Supporting homeless communities through food distribution and community gardening initiatives.",
+    contact: "David Chen",
+    email: "david.ch@nnc.org",
+    phone: "+1-234-567-8902",
+    address: "456 Hope Street, River Town, 67890",
+  },
+
+  3: {
+    name: "GreenPlate Initiative",
+    description:
+      "Reducing food waste through education programs and sustainable food recovery practices.",
+    contact: "Sophia Lee",
+    email: "sophia.le@gpi.org",
+    phone: "+1-234-567-8903",
+    address: "789 Green Avenue, Sustainability City, 11111",
+  },
+
+  4: {
+    name: "Helping Hands Alliance",
+    description:
+      "Providing emergency food relief and support services to families in need.",
+    contact: "John Smith",
+    email: "john.sm@hha.org",
+    phone: "+1-234-567-8904",
+    address: "321 Unity Road, Helping Town, 22222",
+  },
+
+  5: {
+    name: "Food For Thought",
+    description:
+      "Delivering nutritious meals and companionship to elderly community members.",
+    contact: "Emily White",
+    email: "emily.wh@fft.org",
+    phone: "+1-234-567-8905",
+    address: "654 Care Lane, Senior City, 33333",
+  },
+};
+
+const ngo = ngoData[id];
+
+  console.log(id);
   const [notes, setNotes] = useState(`• Follow up on volunteer training schedule
 • Coordinate delivery routes for next week
 • Check volunteer availability for weekend events
@@ -16,7 +74,11 @@ const NGOProfile = () => {
       <div className="flex flex-col">
         {/* Top Bar */}
         <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-800">NGO Profile: Community Harvest Hub</h1>
+          {/* <h1 className="text-2xl font-bold text-gray-800">NGO Profile: Community Harvest Hub</h1> */}
+
+          <h1 className="text-2xl font-bold text-gray-800">
+              NGO Profile: {ngo?.name}
+            </h1>
           
           <div className="flex items-center space-x-4">
             {/* Top Right Icons */}
@@ -40,13 +102,50 @@ const NGOProfile = () => {
 
         {/* Content Area */}
         <div className="p-6">
+
+          {/* NGO Statistics Cards */}
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white p-5 rounded-xl shadow border">
+              <p className="text-gray-500 text-sm">Families Served</p>
+              <h3 className="text-2xl font-bold text-orange-600">450</h3>
+            </div>
+
+            <div className="bg-white p-5 rounded-xl shadow border">
+              <p className="text-gray-500 text-sm">Volunteers</p>
+              <h3 className="text-2xl font-bold text-orange-600">120</h3>
+            </div>
+
+            <div className="bg-white p-5 rounded-xl shadow border">
+              <p className="text-gray-500 text-sm">Food Distributed</p>
+              <h3 className="text-2xl font-bold text-orange-600">2.4 Tons</h3>
+            </div>
+
+            <div className="bg-white p-5 rounded-xl shadow border">
+              <p className="text-gray-500 text-sm">Events Hosted</p>
+              <h3 className="text-2xl font-bold text-orange-600">18</h3>
+            </div>
+          </div>
+
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* NGO Info Card */}
             <div className="bg-green-50 rounded-lg p-6 border border-green-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-3">Community Harvest Hub</h2>
-              <p className="text-gray-600 mb-6">
+              {/* <h2 className="text-xl font-bold text-gray-800 mb-3">Community Harvest Hub</h2> */}
+              
+              <h2 className="text-xl font-bold text-gray-800 mb-3">
+                {ngo?.name}
+              </h2>
+
+
+              {/* <p className="text-gray-600 mb-6">
                 Dedicated to combating food insecurity by distributing fresh, nutritious food to underserved communities and empowering youth through educational programs.
+              </p> */}
+
+              <p className="text-gray-600 mb-6">
+                {ngo?.description}
               </p>
+
               <div className="flex space-x-3">
                 <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors flex items-center">
                   <span className="mr-2">📞</span>
@@ -89,19 +188,19 @@ const NGOProfile = () => {
                 <div className="space-y-2">
                   <div className="flex items-center">
                     <span className="mr-3">👤</span>
-                    <span className="text-gray-800">Maria Rodriguez</span>
+                    <span className="text-gray-800">{ngo?.contact}</span>
                   </div>
                   <div className="flex items-center">
                     <span className="mr-3">✉️</span>
-                    <span className="text-gray-800">maria.r@chhub.org</span>
+                    <span className="text-gray-800">{ngo?.email}</span>
                   </div>
                   <div className="flex items-center">
                     <span className="mr-3">📞</span>
-                    <span className="text-gray-800">+1-234-567-8901</span>
+                    <span className="text-gray-800">{ngo?.phone}</span>
                   </div>
                   <div className="flex items-center">
                     <span className="mr-3">📍</span>
-                    <span className="text-gray-800">123 Green Valley Lane, Eco City, 54321</span>
+                    <span className="text-gray-800">{ngo?.address}</span>
                   </div>
                 </div>
               </div>

@@ -83,7 +83,10 @@ function App() {
         <Route path="/donate-food" element={ <ProtectedRoute> <DonateFood /> </ProtectedRoute> }/>
 
         <Route path="/ngos" element={<NGOs />} />
-        <Route path="/ngo-profile" element={<NGOProfile />} />
+
+        {/* <Route path="/ngo-profile" element={<NGOProfile />} /> */}
+        <Route path="/ngo-profile/:id" element={<NGOProfile />} />
+
         <Route path="/campus-reminder" element={<CampusReminder />} />
         <Route path="/beneficiary" element={<Beneficiary />} />
         <Route path="/beneficiary/:id" element={<BeneficiaryDetail />} />

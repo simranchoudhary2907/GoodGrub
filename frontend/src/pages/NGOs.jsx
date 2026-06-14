@@ -11,6 +11,7 @@ const NGOs = () => {
 
   const ngoData = [
     {
+      id: 1,
       name: "Community Harvest Hub",
       focusAreas: ["Food Distribution", "Youth Support"],
       contact: {
@@ -21,6 +22,7 @@ const NGOs = () => {
       opportunities: ["Food Sorting", "Delivery Driver", "Event Coordination"]
     },
     {
+      id: 2,
       name: "Nourish Neighbors Collective",
       focusAreas: ["Homeless Aid", "Community Gardens"],
       contact: {
@@ -31,6 +33,7 @@ const NGOs = () => {
       opportunities: ["Garden Maintenance", "Kitchen Prep", "Outreach"]
     },
     {
+      id: 3,
       name: "GreenPlate Initiative",
       focusAreas: ["Food Waste Reduction", "Education"],
       contact: {
@@ -41,6 +44,7 @@ const NGOs = () => {
       opportunities: ["Workshop Facilitator", "Collection Point Management"]
     },
     {
+      id: 4,
       name: "Helping Hands Alliance",
       focusAreas: ["Family Support", "Emergency Relief"],
       contact: {
@@ -51,6 +55,7 @@ const NGOs = () => {
       opportunities: ["Packing Kits", "Distribution Support"]
     },
     {
+      id: 5,
       name: "Food For Thought",
       focusAreas: ["Elderly Care", "Meal Delivery"],
       contact: {
@@ -105,9 +110,33 @@ const NGOs = () => {
 
         {/* Content Area */}
         <div className="flex-1 p-6">
+
+        {/* Statistics Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500">
+                <p className="text-gray-500 text-sm">Total NGOs</p>
+                <h3 className="text-3xl font-bold text-orange-600">5</h3>
+              </div>
+
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-green-500">
+                <p className="text-gray-500 text-sm">Volunteers</p>
+                <h3 className="text-3xl font-bold text-green-600">120</h3>
+              </div>
+
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-blue-500">
+                <p className="text-gray-500 text-sm">Food Distributed</p>
+                <h3 className="text-3xl font-bold text-blue-600">2.4 Tons</h3>
+              </div>
+
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-purple-500">
+                <p className="text-gray-500 text-sm">Families Served</p>
+                <h3 className="text-3xl font-bold text-purple-600">450</h3>
+              </div>
+            </div>
+
           {/* Tabs */}
           <div className="flex items-center space-x-6 mb-6">
-            <button
+            {/* <button
               onClick={() => setActiveTab("ngos")}
               className={`px-4 py-2 rounded-lg font-medium ${
                 activeTab === "ngos"
@@ -116,8 +145,8 @@ const NGOs = () => {
               }`}
             >
               NGOs
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={() => setActiveTab("beneficiaries")}
               className={`px-4 py-2 rounded-lg font-medium ${
                 activeTab === "beneficiaries"
@@ -126,7 +155,7 @@ const NGOs = () => {
               }`}
             >
               Beneficiaries
-            </button>
+            </button> */}
             
             <div className="flex-1"></div>
             
@@ -208,14 +237,28 @@ const NGOs = () => {
                           ))}
                         </div>
                       </td>
-                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                             {/* <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                          <button 
-                           onClick={() => navigate("/ngo-profile")}
+                          //  onClick={() => navigate("/ngo-profile")}
+                           onClick={() => navigate(`/ngo-profile/${index}`)}
                            className="text-orange-600 hover:text-orange-900"
                          >
                            View Details
                          </button>
-                       </td>
+                       </td> */}
+
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <button
+                                // onClick={() => navigate("/ngo-profile")}
+                                
+                                onClick={() => navigate(`/ngo-profile/${ngo.id}`)}
+
+                                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-200"
+                              >
+                                View Profile →
+                              </button>
+                            </td>
+
                     </tr>
                   ))}
                 </tbody>
