@@ -10,9 +10,17 @@ const Header = () => {
   const [openDropdown, setOpenDropdown] = useState(null); // which dropdown is open
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem("user"))
-  );
+  // const [user, setUser] = useState(
+  //   JSON.parse(localStorage.getItem("user"))
+  // );
+
+  const [user, setUser] = useState(() => {
+  try {
+    return JSON.parse(localStorage.getItem("user"));
+  } catch (e) {
+    return null;
+  }
+});
 
   const headerRef = useRef(null);
 
@@ -342,7 +350,7 @@ const Header = () => {
     <div className="flex items-center gap-3">
       <span className="text-white font-medium">
         {/* Hi, {user.username} */}
-        Hi, {user.username.split(" ")[0]}
+        Hi, {user?.username?.split(" ")[0] || "User"}
       </span>
 
       <button

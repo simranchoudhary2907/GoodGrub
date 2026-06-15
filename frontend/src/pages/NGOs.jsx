@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
+
+// import Navbar from "../components/Navbar";
+
 // Temporarily comment out react-icons to test if that's the issue
 // import { FaSearch, FaBell, FaComments, FaGrid, FaShieldAlt, FaUsers, FaChartBar, FaCog, FaFilter, FaSort } from "react-icons/fa";
 
@@ -77,10 +79,37 @@ const NGOs = () => {
       {/* Main Content */}
       <div className="flex flex-col">
         {/* Top Bar */}
-        <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-800">Platform Overview</h1>
+        {/* <div className="bg-white border-b px-6 py-4 flex items-center justify-between"> */}
+          {/* <h1 className="text-2xl font-bold text-gray-800">Platform Overview</h1> */}
+
+          {/* <h1 className="text-3xl font-bold text-gray-800">
+            NGO Management Hub
+          </h1>
+
+          <p className="text-gray-500 mt-1">
+            Connect NGOs with surplus food and streamline distribution.
+          </p>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4"> */}
+
+            
+            <div className="bg-white border-b px-6 py-5">
+
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+              {/* LEFT SIDE */}
+              <div>
+                <h1 className="text-3xl font-bold text-gray-800">
+                  NGO Management Hub
+                </h1>
+                <p className="text-gray-500 mt-1">
+                  Connect NGOs with surplus food and streamline distribution.
+                </p>
+              </div>
+
+              {/* RIGHT SIDE */}
+              <div className="flex items-center space-x-4">
+
             {/* Search Bar */}
             <div className="relative">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
@@ -107,6 +136,7 @@ const NGOs = () => {
             </button>
           </div>
         </div>
+      </div>
 
         {/* Content Area */}
         <div className="flex-1 p-6">

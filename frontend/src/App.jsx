@@ -1,3 +1,6 @@
+// import Header from "./components/Navbar";
+import Layout from "./components/Layout";
+
 import { Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -34,6 +37,8 @@ import VolunteerFAQs from './pages/VolunteerFAQs'
 function App() {
   return (
     <>
+       {/* <Header /> 🔥 ADD THIS HERE */}
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -82,7 +87,11 @@ function App() {
 
         <Route path="/donate-food" element={ <ProtectedRoute> <DonateFood /> </ProtectedRoute> }/>
 
-        <Route path="/ngos" element={<NGOs />} />
+        {/* <Route path="/ngos" element={<NGOs />} /> */}
+        {/* <Route path="/ngos" element={ <Layout> <NGOs /> </Layout> } /> */}
+        <Route element={<Layout />}>
+            <Route path="/ngos" element={<NGOs />} />
+        </Route>
 
         {/* <Route path="/ngo-profile" element={<NGOProfile />} /> */}
         <Route path="/ngo-profile/:id" element={<NGOProfile />} />
@@ -98,8 +107,10 @@ function App() {
         <Route path="/test" element={<div className="p-8 text-center"><h1 className="text-2xl">Test Page Works!</h1></div>} />
        
         {/* <Route path="/test" element={<BackendTest />} /> */}
+        {/* <Route path="*" element={<NotFound />} /> */}
       
       </Routes>
+
     </>
   )
 }

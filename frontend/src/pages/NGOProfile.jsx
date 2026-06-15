@@ -7,54 +7,85 @@ const NGOProfile = () => {
 
   const ngoData = {
   1: {
-    name: "Community Harvest Hub",
-    description:
-      "Dedicated to combating food insecurity by distributing fresh, nutritious food to underserved communities and empowering youth through educational programs.",
-    contact: "Maria Rodriguez",
-    email: "maria.r@chhub.org",
-    phone: "+1-234-567-8901",
-    address: "123 Green Valley Lane, Eco City, 54321",
-  },
+  name: "Community Harvest Hub",
+  description:
+    "Dedicated to combating food insecurity by distributing fresh, nutritious food to underserved communities and empowering youth through educational programs.",
+
+  contact: "Maria Rodriguez",
+  email: "maria.r@chhub.org",
+  phone: "+1-234-567-8901",
+  address: "123 Green Valley Lane, Eco City, 54321",
+
+  familiesServed: 450,
+  volunteers: 120,
+  foodDistributed: "2.4 Tons",
+  eventsHosted: 18,
+},
 
   2: {
-    name: "Nourish Neighbors Collective",
-    description:
-      "Supporting homeless communities through food distribution and community gardening initiatives.",
-    contact: "David Chen",
-    email: "david.ch@nnc.org",
-    phone: "+1-234-567-8902",
-    address: "456 Hope Street, River Town, 67890",
-  },
+  name: "Nourish Neighbors Collective",
+  description:
+    "Supporting homeless communities through food distribution and community gardening initiatives.",
 
-  3: {
-    name: "GreenPlate Initiative",
-    description:
-      "Reducing food waste through education programs and sustainable food recovery practices.",
-    contact: "Sophia Lee",
-    email: "sophia.le@gpi.org",
-    phone: "+1-234-567-8903",
-    address: "789 Green Avenue, Sustainability City, 11111",
-  },
+  contact: "David Chen",
+  email: "david.ch@nnc.org",
+  phone: "+1-234-567-8902",
+  address: "456 Hope Street, River Town, 67890",
 
-  4: {
-    name: "Helping Hands Alliance",
-    description:
-      "Providing emergency food relief and support services to families in need.",
-    contact: "John Smith",
-    email: "john.sm@hha.org",
-    phone: "+1-234-567-8904",
-    address: "321 Unity Road, Helping Town, 22222",
-  },
+  familiesServed: 320,
+  volunteers: 90,
+  foodDistributed: "1.8 Tons",
+  eventsHosted: 12,
+},
 
-  5: {
-    name: "Food For Thought",
-    description:
-      "Delivering nutritious meals and companionship to elderly community members.",
-    contact: "Emily White",
-    email: "emily.wh@fft.org",
-    phone: "+1-234-567-8905",
-    address: "654 Care Lane, Senior City, 33333",
-  },
+3: {
+  name: "GreenPlate Initiative",
+  description:
+    "Reducing food waste through education programs and sustainable food recovery practices.",
+
+  contact: "Sophia Lee",
+  email: "sophia.le@gpi.org",
+  phone: "+1-234-567-8903",
+  address: "789 Green Avenue, Sustainability City, 11111",
+
+  familiesServed: 280,
+  volunteers: 75,
+  foodDistributed: "1.2 Tons",
+  eventsHosted: 10,
+},
+
+4: {
+  name: "Helping Hands Alliance",
+  description:
+    "Providing emergency food relief and support services to families in need.",
+
+  contact: "John Smith",
+  email: "john.sm@hha.org",
+  phone: "+1-234-567-8904",
+  address: "321 Unity Road, Helping Town, 22222",
+
+  familiesServed: 600,
+  volunteers: 150,
+  foodDistributed: "3.5 Tons",
+  eventsHosted: 25,
+},
+
+5: {
+  name: "Food For Thought",
+  description:
+    "Delivering nutritious meals and companionship to elderly community members.",
+
+  contact: "Emily White",
+  email: "emily.wh@fft.org",
+  phone: "+1-234-567-8905",
+  address: "654 Care Lane, Senior City, 33333",
+
+  familiesServed: 200,
+  volunteers: 60,
+  foodDistributed: "900 Kg",
+  eventsHosted: 8,
+},
+
 };
 
 const ngo = ngoData[id];
@@ -103,40 +134,71 @@ const ngo = ngoData[id];
         {/* Content Area */}
         <div className="p-6">
 
+
           {/* NGO Statistics Cards */}
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-white p-5 rounded-xl shadow border">
               <p className="text-gray-500 text-sm">Families Served</p>
-              <h3 className="text-2xl font-bold text-orange-600">450</h3>
+              {/* <h3 className="text-2xl font-bold text-orange-600">450</h3> */}
+
+              <h3 className="text-2xl font-bold text-orange-600">
+              {ngo?.familiesServed}
+            </h3>
+
             </div>
 
             <div className="bg-white p-5 rounded-xl shadow border">
               <p className="text-gray-500 text-sm">Volunteers</p>
-              <h3 className="text-2xl font-bold text-orange-600">120</h3>
+              {/* <h3 className="text-2xl font-bold text-orange-600">120</h3> */}
+
+              <h3 className="text-2xl font-bold text-orange-600">
+                {ngo?.volunteers}
+              </h3>
+              
             </div>
 
             <div className="bg-white p-5 rounded-xl shadow border">
               <p className="text-gray-500 text-sm">Food Distributed</p>
-              <h3 className="text-2xl font-bold text-orange-600">2.4 Tons</h3>
+              {/* <h3 className="text-2xl font-bold text-orange-600">2.4 Tons</h3> */}
+              <h3 className="text-2xl font-bold text-orange-600">
+                {ngo?.foodDistributed}
+              </h3>
             </div>
 
             <div className="bg-white p-5 rounded-xl shadow border">
               <p className="text-gray-500 text-sm">Events Hosted</p>
-              <h3 className="text-2xl font-bold text-orange-600">18</h3>
+              <h3 className="text-2xl font-bold text-orange-600">
+                {ngo?.eventsHosted}
+              </h3>
             </div>
           </div>
 
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             {/* NGO Info Card */}
+            {/* <div className="bg-green-50 rounded-lg p-6 border border-green-200"> */}
+
             <div className="bg-green-50 rounded-lg p-6 border border-green-200">
+
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-16 h-16 rounded-full bg-orange-500 text-white flex items-center justify-center text-2xl font-bold">
+                {ngo?.name?.charAt(0)}
+              </div>
+
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">
+                  {ngo?.name}
+                </h2>
+
+                <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-medium">
+                  ✓ Verified NGO
+                </span>
+              </div>
+            </div>
+
               {/* <h2 className="text-xl font-bold text-gray-800 mb-3">Community Harvest Hub</h2> */}
               
-              <h2 className="text-xl font-bold text-gray-800 mb-3">
-                {ngo?.name}
-              </h2>
-
 
               {/* <p className="text-gray-600 mb-6">
                 Dedicated to combating food insecurity by distributing fresh, nutritious food to underserved communities and empowering youth through educational programs.
