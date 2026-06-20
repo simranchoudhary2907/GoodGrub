@@ -1,5 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
+import {
+  FaSearch,
+  FaBell,
+  FaComments,
+  FaFilter,
+  FaSortAmountDown,
+  FaEllipsisV,
+} from "react-icons/fa";
 
 // import Navbar from "../components/Navbar";
 
@@ -10,6 +19,14 @@ const NGOs = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("ngos");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showNotifications, setShowNotifications] = useState(false);
+  // const [showNotifications, setShowNotifications] = useState(true);
+  const [showMessages, setShowMessages] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+  const [showSort, setShowSort] = useState(false);
+  const notificationRef = useRef(null);
+  const messageRef = useRef(null);
+  const [selectedFilter, setSelectedFilter] = useState("All");
 
   const ngoData = [
     {
@@ -69,10 +86,108 @@ const NGOs = () => {
     }
   ];
 
-  const filteredNGOs = ngoData.filter(ngo =>
+  // const filteredNGOs = ngoData.filter((ngo) => {
+  // const matchesSearch =
+  //   ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   ngo.contact.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+  const filteredNGOs = ngoData.filter((ngo) => {
+  const matchesSearch =
     ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ngo.contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    ngo.contact.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+  const matchesFilter =
+    selectedFilter === "All" ||
+    ngo.focusAreas.includes(selectedFilter);
+
+  return matchesSearch && matchesFilter;
+});
+
+//   const matchesFilter =
+//     selectedFilter === "All" ||
+//     ngo.focusAreas.includes(selectedFilter);
+
+//   return matchesSearch && matchesFilter;
+// });
+
+  const notifications = [
+  {
+    title: "New NGO Registered",
+    time: "2 mins ago"
+  },
+  {
+    title: "Volunteer Assigned",
+    time: "10 mins ago"
+  },
+  {
+    title: "Food Donation Claimed",
+    time: "1 hour ago"
+  },
+  {
+    title: "Pickup Scheduled",
+    time: "3 hours ago"
+  },
+  {
+    title: "New Partner NGO Added",
+    time: "Yesterday"
+  }
+];
+
+const messages = [
+  {
+    sender: "Maria Rodriguez",
+    text: "Need food pickup assistance"
+  },
+  {
+    sender: "David Chen",
+    text: "Volunteer assigned"
+  },
+  {
+    sender: "Emily White",
+    text: "Food delivered successfully"
+  }
+];
+
+const filterOptions = [
+  "All",
+  "Food Distribution",
+  "Education",
+  "Emergency Relief",
+  "Youth Support",
+  "Elderly Care",
+  "Community Gardens",
+  "Food Waste Reduction",
+];
+
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (
+      notificationRef.current &&
+      !notificationRef.current.contains(event.target)
+    ) {
+      setShowNotifications(false);
+    }
+
+    if (
+      messageRef.current &&
+      !messageRef.current.contains(event.target)
+    ) {
+      setShowMessages(false);
+    }
+
+    setShowFilter(false);
+    setShowSort(false);
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, []);
+
+
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -108,30 +223,114 @@ const NGOs = () => {
               </div>
 
               {/* RIGHT SIDE */}
-              <div className="flex items-center space-x-4">
+              {/* <div className="flex items-center space-x-4 ml"> */}
+              <div className="flex items-center space-x-4 ml-auto">
 
             {/* Search Bar */}
-            <div className="relative">
-              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+            <div className="relative  w-[550px] -ml-12">
+              {/* <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span> */}
+                
+              <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"><FaSearch /></span>
+
               <input
                 type="text"
-                placeholder="Search NGOs..."
+                placeholder="Search NGOs, focus areas, volunteers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-              />
+                // className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
+                />
             </div>
             
-            {/* Icons */}
-            <button className="p-2 text-gray-400 hover:text-gray-600">
-              <span className="w-5 h-5">🔔</span>
-            </button>
-            <button className="p-2 text-gray-400 hover:text-gray-600">
-              <span className="w-5 h-5">💬</span>
-            </button>
+            {/* Icons 🔔*/}
+
+              <div className="relative" ref={notificationRef}>
+              <button
+                onClick={() =>{
+                setShowNotifications(!showNotifications);
+                setShowMessages(false);
+              }}
+                className="relative cursor-pointer"
+              >
+                <FaBell
+                  size={22}
+                  className="text-gray-700 hover:text-black transition-all duration-200"
+                />
+
+                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full px-1">
+                  {notifications.length}
+                </span>
+              </button>
+
+              {showNotifications && (
+                <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
+                  <div className="p-3 font-semibold border-b">
+                    Notifications
+                  </div>
+
+                  {notifications.map((item, index) => (
+                    <div
+                      key={index}
+                      className="p-3 hover:bg-gray-100 cursor-pointer border-b"
+                    >
+                      <p className="text-sm font-medium">
+                        {item.title}
+                      </p>
+
+                      <p className="text-xs text-gray-500">
+                        {item.time}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+              {/* Icons 💬*/}
+
+           <div className="relative" ref={messageRef}>
+              <button
+                onClick={() => {
+                  setShowMessages(!showMessages);
+                  setShowNotifications(false);
+                }}
+                className="relative cursor-pointer">
+                <FaComments
+                  size={22}
+                  className="text-gray-700 hover:text-black transition-all duration-200"
+                />
+
+                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full px-1">
+                  {messages.length}
+                </span>
+              </button>
+
+              {showMessages && (
+                <div className="absolute right-0 mt-3 w-72 bg-white rounded-xl shadow-xl border z-50">
+                  <div className="p-3 font-semibold border-b">
+                    Messages
+                  </div>
+
+                  {messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className="p-3 hover:bg-gray-100 cursor-pointer border-b"
+                    >
+                      <p className="text-sm font-medium">
+                        {msg.sender}
+                      </p>
+
+                      <p className="text-xs text-gray-500">
+                        {msg.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
             
             {/* Add New NGO Button */}
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">
+            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200">
               Add New NGO
             </button>
           </div>
@@ -189,12 +388,42 @@ const NGOs = () => {
             
             <div className="flex-1"></div>
             
-            <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
-              <span className="mr-2">🔽</span>
-              Filter
-            </button>
-            <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50">
-              <span className="mr-2">↕️</span>
+            {/* Filter 🔽*/}
+
+            <div className="relative">
+          <button
+            onClick={() => setShowFilter(!showFilter)}
+            className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm text-gray-700 hover:bg-gray-100 hover:shadow-md"
+          >
+            <FaFilter className="mr-2" />
+            Filter: {selectedFilter}
+          </button>
+
+          {showFilter && (
+            <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl border z-50">
+
+              {filterOptions.map((option) => (
+                <div
+                  key={option}
+                  onClick={() => {
+                    setSelectedFilter(option);
+                    setShowFilter(false);
+                  }}
+                  className="p-3 hover:bg-gray-100 cursor-pointer"
+                >
+                  {option}
+                </div>
+              ))}
+
+            </div>
+          )}
+        </div>
+            
+             {/* Sort */}
+
+            {/* <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"> */}
+             <button className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm text-gray-700 hover:bg-gray-100 hover:shadow-md hover:text-black transition-all duration-200 cursor-pointer">
+              <FaSortAmountDown className="mr-2" />
               Sort
             </button>
           </div>
@@ -233,9 +462,24 @@ const NGOs = () => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredNGOs.map((ngo, index) => (
                     <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
+                      {/* <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">{ngo.name}</div>
-                      </td>
+                      </td> */}
+                    
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+
+                        <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-xl">
+                          🌱
+                        </div>
+
+                        <div className="text-sm font-medium text-gray-900">
+                          {ngo.name}
+                        </div>
+
+                      </div>
+                    </td>
+
                       <td className="px-6 py-4">
                         <div className="flex flex-wrap gap-1">
                           {ngo.focusAreas.map((area, areaIndex) => (
@@ -277,7 +521,7 @@ const NGOs = () => {
                          </button>
                        </td> */}
 
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            {/* <td className="px-6 py-4 whitespace-nowrap">
                               <button
                                 // onClick={() => navigate("/ngo-profile")}
                                 
@@ -287,7 +531,25 @@ const NGOs = () => {
                               >
                                 View Profile →
                               </button>
-                            </td>
+                            </td> */}
+
+                            <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center gap-3">
+
+                              <button
+                                onClick={() => navigate(`/ngo-profile/${ngo.id}`)}
+                                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg"
+                              >
+                                View Profile →
+                              </button>
+
+                              <button className="text-gray-500 hover:text-black">
+                                <FaEllipsisV />
+                              </button>
+
+                            </div>
+                          </td>
+
 
                     </tr>
                   ))}
