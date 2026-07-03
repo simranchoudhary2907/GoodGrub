@@ -29,6 +29,8 @@ const NGOs = () => {
   const [sortType, setSortType] = useState("A-Z");
   const [openMenu, setOpenMenu] = useState(null);
 // const [ngoData, setNgoData] = useState(defaultNGOs);
+const [isEditing, setIsEditing] = useState(false);
+const [editingId, setEditingId] = useState(null);
 
 const [ngoData, setNgoData] = useState(() => {
   const saved = localStorage.getItem("ngoData");
@@ -54,6 +56,12 @@ const initialNGO = {
   focusAreas: [],
   logo: null,
   opportunities: "",
+
+   // Add these
+  familiesServed: "",
+  volunteers: "",
+  foodDistributed: "",
+  eventsHosted: "",
 };
 
 const [newNGO, setNewNGO] = useState(initialNGO);
@@ -220,7 +228,6 @@ useEffect(() => {
 }, []);
 
 
-
   // Save NGO Data
   useEffect(() => {
   localStorage.setItem("ngoData", JSON.stringify(ngoData));
@@ -233,14 +240,78 @@ useEffect(() => {
   }
 };
 
-const handleEditNGO = (id) => {
-  const newName = prompt("Enter new NGO name:");
+const handleEditNGO = (ngo) => {
+  setIsEditing(true);
+  setEditingId(ngo.id);
 
-  setNgoData((prev) =>
-    prev.map((ngo) =>
-      ngo.id === id ? { ...ngo, name: newName } : ngo
-    )
-  );
+  setNewNGO({
+    name: ngo.name || "",
+    registration: ngo.registration || "",
+    contactPerson: ngo.contactPerson || ngo.contact?.name || "",
+    email: ngo.email || ngo.contact?.email || "",
+    phone: ngo.phone || ngo.contact?.phone || "",
+    website: ngo.website || "",
+    city: ngo.city || "",
+    state: ngo.state || "",
+    description: ngo.description || "",
+    focusAreas: ngo.focusAreas || [],
+    logo: ngo.logo || null,
+    opportunities: Array.isArray(ngo.opportunities)
+      ? ngo.opportunities.join(", ")
+      : ngo.opportunities || "",
+
+      familiesServed: ngo.familiesServed || "",
+    volunteers: ngo.volunteers || "",
+    foodDistributed: ngo.foodDistributed || "",
+    eventsHosted: ngo.eventsHosted || "",
+  });
+
+  setShowAddNGO(true);
+  setOpenMenu(null);
+};
+
+
+// UpdateNGO
+
+const handleUpdateNGO = () => {
+  const updatedData = ngoData.map((ngo) => {
+    if (ngo.id !== editingId) return ngo;
+
+    return {
+      ...ngo,
+
+      name: newNGO.name,
+      registration: newNGO.registration,
+      website: newNGO.website,
+      city: newNGO.city,
+      state: newNGO.state,
+      description: newNGO.description,
+      focusAreas: newNGO.focusAreas,
+      logo: newNGO.logo,
+
+      contact: {
+        name: newNGO.contactPerson,
+        email: newNGO.email,
+        phone: newNGO.phone,
+      },
+
+      familiesServed: newNGO.familiesServed,
+      volunteers: newNGO.volunteers,
+      foodDistributed: newNGO.foodDistributed,
+      eventsHosted: newNGO.eventsHosted,
+
+      opportunities: newNGO.opportunities
+        .split(",")
+        .map((item) => item.trim()),
+    };
+  });
+
+  setNgoData(updatedData);
+
+  setShowAddNGO(false);
+  setIsEditing(false);
+  setEditingId(null);
+  setNewNGO(initialNGO);
 };
 
 // handleAddNGO
@@ -259,23 +330,41 @@ newNGO.focusAreas.length === 0) {
  return;
 }
 
-const NGOs = {
-    id: ngoData.length + 1,
-    name: newNGO.name,
-    // focusAreas: ["New NGO"],
-    focusAreas: newNGO.focusAreas,
-    contact: {
-      name: newNGO.name,
-      email: newNGO.email,
-      phone: newNGO.phone,
-    },
-    opportunities: newNGO.opportunities
+const ngo = {
+  // id: ngoData.length + 1,
+  id: Date.now(),
+  name: newNGO.name,
+  registration: newNGO.registration,
+
+  website: newNGO.website,
+
+  city: newNGO.city,
+  state: newNGO.state,
+
+  description: newNGO.description,
+
+  focusAreas: newNGO.focusAreas,
+
+  logo: newNGO.logo,
+
+  familiesServed: newNGO.familiesServed,
+  volunteers: newNGO.volunteers,
+  foodDistributed: newNGO.foodDistributed,
+  eventsHosted: newNGO.eventsHosted,
+
+  contact: {
+    name: newNGO.contactPerson,
+    email: newNGO.email,
+    phone: newNGO.phone,
+  },
+
+  opportunities: newNGO.opportunities
     .split(",")
-    .map(item => item.trim()),
-  };
+    .map((item) => item.trim()),
+};
 
 
-  setNgoData([...ngoData, NGOs]);
+  setNgoData([...ngoData, ngo]);
 
   setShowAddNGO(false);
 
@@ -410,12 +499,26 @@ const NGOs = {
             </div>
             
             {/* Add New NGO Button */}
-            {/* <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200"> */}
-            <button
+
+            {/* <button
             onClick={() => { setNewNGO(initialNGO); setShowAddNGO(true);}}
             className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200">
               Add New NGO
-            </button>
+            </button> */}
+
+              <button
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditingId(null);
+                  setNewNGO(initialNGO);
+                  setShowAddNGO(true);
+                }}
+                className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200"
+              >
+                Add New NGO
+              </button>
+
+
           </div>
         </div>
       </div>
@@ -671,7 +774,7 @@ transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer"
           >
 
             <h2 className="text-2xl font-bold mb-6">
-              Add New NGO
+              {isEditing ? "Update NGO" : "Add New NGO"}
             </h2>
 
             <div className="grid grid-cols-2 gap-4">
@@ -811,6 +914,63 @@ transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer"
               className="border rounded-lg p-3 w-full mt-4"
             />
 
+            <div className="grid grid-cols-2 gap-4 mt-4">
+
+                {/* Add NGO Form me 4 Inputs */}
+                <input
+                  type="number"
+                  placeholder="Families Served"
+                  value={newNGO.familiesServed}
+                  onChange={(e) =>
+                    setNewNGO({
+                      ...newNGO,
+                      familiesServed: e.target.value,
+                    })
+                  }
+                  className="border rounded-lg p-3"
+                />
+
+                <input
+                  type="number"
+                  placeholder="Volunteers"
+                  value={newNGO.volunteers}
+                  onChange={(e) =>
+                    setNewNGO({
+                      ...newNGO,
+                      volunteers: e.target.value,
+                    })
+                  }
+                  className="border rounded-lg p-3"
+                />
+
+                <input
+                  type="text"
+                  placeholder="Food Distributed (e.g. 2.5 Tons)"
+                  value={newNGO.foodDistributed}
+                  onChange={(e) =>
+                    setNewNGO({
+                      ...newNGO,
+                      foodDistributed: e.target.value,
+                    })
+                  }
+                  className="border rounded-lg p-3"
+                />
+
+                <input
+                  type="number"
+                  placeholder="Events Hosted"
+                  value={newNGO.eventsHosted}
+                  onChange={(e) =>
+                    setNewNGO({
+                      ...newNGO,
+                      eventsHosted: e.target.value,
+                    })
+                  }
+                  className="border rounded-lg p-3"
+                />
+
+              </div>
+
                 {/* Volunteering Opportunities */}
             <input
               type="text"
@@ -905,10 +1065,10 @@ transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer"
               {/* Last button */}
 
               <button
-              onClick={handleAddNGO}
+              onClick={isEditing ? handleUpdateNGO : handleAddNGO}
               className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
             >
-              Add NGO
+              {isEditing ? "Update NGO" : "Add NGO"}
             </button>
 
             </div>

@@ -43,16 +43,41 @@
       },
       opportunities: ["Packing Kits", "Distribution Support"]
     },
+    // {
+    //   id: 5,
+    //   name: "Food For Thought",
+    //   focusAreas: ["Elderly Care", "Meal Delivery"],
+    //   contact: {
+    //     name: "Emily White",
+    //     email: "emily.wh@fft.org",
+    //     phone: "+1-234-567-8905"
+    //   },
+    //   opportunities: ["Meal Preparation", "Route Driver", "Companionship Visits"]
+
     {
       id: 5,
       name: "Food For Thought",
+      registration: "NGO-005",
+      website: "https://foodforthought.org",
+      city: "Mumbai",
+      state: "Maharashtra",
+      description: "Food For Thought provides nutritious meals to elderly citizens.",
+      logo: null,
+
       focusAreas: ["Elderly Care", "Meal Delivery"],
+
       contact: {
         name: "Emily White",
         email: "emily.wh@fft.org",
-        phone: "+1-234-567-8905"
+        phone: "+1-234-567-8905",
       },
-      opportunities: ["Meal Preparation", "Route Driver", "Companionship Visits"]
+
+      opportunities: [
+        "Meal Preparation",
+        "Route Driver",
+        "Companionship Visits",
+      ]
+
     }];
 
     export default defaultNGOs;
