@@ -1,5 +1,8 @@
+import defaultNGOs from "../Data/ngoData";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
+import { FaEllipsisV, FaEdit, FaTrash } from "react-icons/fa";
 
 import {
   FaSearch,
@@ -7,13 +10,7 @@ import {
   FaComments,
   FaFilter,
   FaSortAmountDown,
-  FaEllipsisV,
 } from "react-icons/fa";
-
-// import Navbar from "../components/Navbar";
-
-// Temporarily comment out react-icons to test if that's the issue
-// import { FaSearch, FaBell, FaComments, FaGrid, FaShieldAlt, FaUsers, FaChartBar, FaCog, FaFilter, FaSort } from "react-icons/fa";
 
 const NGOs = () => {
   const navigate = useNavigate();
@@ -24,91 +21,107 @@ const NGOs = () => {
   const [showMessages, setShowMessages] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [showSort, setShowSort] = useState(false);
+  const [showAddNGO, setShowAddNGO] = useState(false);
   const notificationRef = useRef(null);
   const messageRef = useRef(null);
+  const filterRef = useRef(null);
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const [sortType, setSortType] = useState("A-Z");
+  const [openMenu, setOpenMenu] = useState(null);
+// const [ngoData, setNgoData] = useState(defaultNGOs);
 
-  const ngoData = [
-    {
-      id: 1,
-      name: "Community Harvest Hub",
-      focusAreas: ["Food Distribution", "Youth Support"],
-      contact: {
-        name: "Maria Rodriguez",
-        email: "maria.rh@chhub.org",
-        phone: "+1-234-567-8901"
-      },
-      opportunities: ["Food Sorting", "Delivery Driver", "Event Coordination"]
-    },
-    {
-      id: 2,
-      name: "Nourish Neighbors Collective",
-      focusAreas: ["Homeless Aid", "Community Gardens"],
-      contact: {
-        name: "David Chen",
-        email: "david.ch@nnc.org",
-        phone: "+1-234-567-8902"
-      },
-      opportunities: ["Garden Maintenance", "Kitchen Prep", "Outreach"]
-    },
-    {
-      id: 3,
-      name: "GreenPlate Initiative",
-      focusAreas: ["Food Waste Reduction", "Education"],
-      contact: {
-        name: "Sophia Lee",
-        email: "sophia.le@gpi.org",
-        phone: "+1-234-567-8903"
-      },
-      opportunities: ["Workshop Facilitator", "Collection Point Management"]
-    },
-    {
-      id: 4,
-      name: "Helping Hands Alliance",
-      focusAreas: ["Family Support", "Emergency Relief"],
-      contact: {
-        name: "John Smith",
-        email: "john.sm@hha.org",
-        phone: "+1-234-567-8904"
-      },
-      opportunities: ["Packing Kits", "Distribution Support"]
-    },
-    {
-      id: 5,
-      name: "Food For Thought",
-      focusAreas: ["Elderly Care", "Meal Delivery"],
-      contact: {
-        name: "Emily White",
-        email: "emily.wh@fft.org",
-        phone: "+1-234-567-8905"
-      },
-      opportunities: ["Meal Preparation", "Route Driver", "Companionship Visits"]
-    }
-  ];
+const [ngoData, setNgoData] = useState(() => {
+  const saved = localStorage.getItem("ngoData");
 
-  // const filteredNGOs = ngoData.filter((ngo) => {
-  // const matchesSearch =
-  //   ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //   ngo.contact.name.toLowerCase().includes(searchTerm.toLowerCase());
-
-  const filteredNGOs = ngoData.filter((ngo) => {
-  const matchesSearch =
-    ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ngo.contact.name.toLowerCase().includes(searchTerm.toLowerCase());
-
-  const matchesFilter =
-    selectedFilter === "All" ||
-    ngo.focusAreas.includes(selectedFilter);
-
-  return matchesSearch && matchesFilter;
+  return saved ? JSON.parse(saved) : defaultNGOs;
 });
 
-//   const matchesFilter =
-//     selectedFilter === "All" ||
-//     ngo.focusAreas.includes(selectedFilter);
+useEffect(() => {
+  localStorage.setItem("ngoData", JSON.stringify(ngoData));
+}, [ngoData]);
 
-//   return matchesSearch && matchesFilter;
-// });
+
+const initialNGO = {
+  name: "",
+  registration: "",
+  contactPerson: "",
+  email: "",
+  phone: "",
+  website: "",
+  city: "",
+  state: "",
+  description: "",
+  focusAreas: [],
+  logo: null,
+  opportunities: "",
+};
+
+const [newNGO, setNewNGO] = useState(initialNGO);
+
+const stateOptions = [
+  { value: "Andhra Pradesh", label: "Andhra Pradesh" },
+  { value: "Arunachal Pradesh", label: "Arunachal Pradesh" },
+  { value: "Assam", label: "Assam" },
+  { value: "Bihar", label: "Bihar" },
+  { value: "Chhattisgarh", label: "Chhattisgarh" },
+  { value: "Goa", label: "Goa" },
+  { value: "Gujarat", label: "Gujarat" },
+  { value: "Haryana", label: "Haryana" },
+  { value: "Himachal Pradesh", label: "Himachal Pradesh" },
+  { value: "Jharkhand", label: "Jharkhand" },
+  { value: "Karnataka", label: "Karnataka" },
+  { value: "Kerala", label: "Kerala" },
+  { value: "Madhya Pradesh", label: "Madhya Pradesh" },
+  { value: "Maharashtra", label: "Maharashtra" },
+  { value: "Manipur", label: "Manipur" },
+  { value: "Meghalaya", label: "Meghalaya" },
+  { value: "Mizoram", label: "Mizoram" },
+  { value: "Nagaland", label: "Nagaland" },
+  { value: "Odisha", label: "Odisha" },
+  { value: "Punjab", label: "Punjab" },
+  { value: "Rajasthan", label: "Rajasthan" },
+  { value: "Sikkim", label: "Sikkim" },
+  { value: "Tamil Nadu", label: "Tamil Nadu" },
+  { value: "Telangana", label: "Telangana" },
+  { value: "Tripura", label: "Tripura" },
+  { value: "Uttar Pradesh", label: "Uttar Pradesh" },
+  { value: "Uttarakhand", label: "Uttarakhand" },
+  { value: "West Bengal", label: "West Bengal" },
+  { value: "Delhi", label: "Delhi" },
+  { value: "Jammu & Kashmir", label: "Jammu & Kashmir" },
+  { value: "Ladakh", label: "Ladakh" },
+  { value: "Chandigarh", label: "Chandigarh" },
+  { value: "Puducherry", label: "Puducherry" },
+];
+
+console.log("Selected Filter:", selectedFilter);
+
+const filteredNGOs = [...ngoData]
+  .filter((ngo) => {
+    const matchesSearch =
+      ngo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ngo.contact.name.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesFilter =
+      selectedFilter === "All" ||
+      ngo.focusAreas.includes(selectedFilter);
+
+    return matchesSearch && matchesFilter;
+  })
+  .sort((a, b) => {
+    if (sortType === "A-Z")
+      return a.name.localeCompare(b.name);
+
+    if (sortType === "Z-A")
+      return b.name.localeCompare(a.name);
+
+    return 0;
+  });
+
+console.log(
+  "Filtered NGOs:",
+  filteredNGOs.map((ngo) => ngo.name)
+);
 
   const notifications = [
   {
@@ -148,6 +161,17 @@ const messages = [
   }
 ];
 
+const focusAreaOptions = [
+  { value: "Food Distribution", label: "Food Distribution" },
+  { value: "Education", label: "Education" },
+  { value: "Emergency Relief", label: "Emergency Relief" },
+  { value: "Youth Support", label: "Youth Support" },
+  { value: "Elderly Care", label: "Elderly Care" },
+  { value: "Community Gardens", label: "Community Gardens" },
+  { value: "Food Waste Reduction", label: "Food Waste Reduction" },
+];
+
+
 const filterOptions = [
   "All",
   "Food Distribution",
@@ -159,6 +183,7 @@ const filterOptions = [
   "Food Waste Reduction",
 ];
 
+//  Outside Click
 useEffect(() => {
   const handleClickOutside = (event) => {
     if (
@@ -175,12 +200,20 @@ useEffect(() => {
       setShowMessages(false);
     }
 
-    setShowFilter(false);
+    if (
+      filterRef.current &&
+      !filterRef.current.contains(event.target)
+    ) {
+      setShowFilter(false);
+    }
+
+    // setShowFilter(false);
     setShowSort(false);
+
   };
-
+   
   document.addEventListener("mousedown", handleClickOutside);
-
+  
   return () => {
     document.removeEventListener("mousedown", handleClickOutside);
   };
@@ -188,25 +221,72 @@ useEffect(() => {
 
 
 
+  // Save NGO Data
+  useEffect(() => {
+  localStorage.setItem("ngoData", JSON.stringify(ngoData));
+}, [ngoData]);
+
+
+  const handleDeleteNGO = (id) => {
+  if (window.confirm("Delete this NGO?")) {
+    setNgoData((prev) => prev.filter((ngo) => ngo.id !== id));
+  }
+};
+
+const handleEditNGO = (id) => {
+  const newName = prompt("Enter new NGO name:");
+
+  setNgoData((prev) =>
+    prev.map((ngo) =>
+      ngo.id === id ? { ...ngo, name: newName } : ngo
+    )
+  );
+};
+
+// handleAddNGO
+
+const handleAddNGO = () => {
+
+  if (
+ !newNGO.name ||
+ !newNGO.registration ||
+ !newNGO.contactPerson ||
+ !newNGO.email ||
+ !newNGO.phone ||
+ !newNGO.website ||
+newNGO.focusAreas.length === 0) {
+ alert("Please fill all required fields.");
+ return;
+}
+
+const NGOs = {
+    id: ngoData.length + 1,
+    name: newNGO.name,
+    // focusAreas: ["New NGO"],
+    focusAreas: newNGO.focusAreas,
+    contact: {
+      name: newNGO.name,
+      email: newNGO.email,
+      phone: newNGO.phone,
+    },
+    opportunities: newNGO.opportunities
+    .split(",")
+    .map(item => item.trim()),
+  };
+
+
+  setNgoData([...ngoData, NGOs]);
+
+  setShowAddNGO(false);
+
+  setNewNGO(initialNGO);
+};
+
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Main Content */}
       <div className="flex flex-col">
-        {/* Top Bar */}
-        {/* <div className="bg-white border-b px-6 py-4 flex items-center justify-between"> */}
-          {/* <h1 className="text-2xl font-bold text-gray-800">Platform Overview</h1> */}
-
-          {/* <h1 className="text-3xl font-bold text-gray-800">
-            NGO Management Hub
-          </h1>
-
-          <p className="text-gray-500 mt-1">
-            Connect NGOs with surplus food and streamline distribution.
-          </p>
-          
-          <div className="flex items-center space-x-4"> */}
-
             
             <div className="bg-white border-b px-6 py-5">
 
@@ -227,7 +307,7 @@ useEffect(() => {
               <div className="flex items-center space-x-4 ml-auto">
 
             {/* Search Bar */}
-            <div className="relative  w-[550px] -ml-12">
+            <div className="relative  w-[420px] -ml-12">
               {/* <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span> */}
                 
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"><FaSearch /></span>
@@ -330,7 +410,10 @@ useEffect(() => {
             </div>
             
             {/* Add New NGO Button */}
-            <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200">
+            {/* <button className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200"> */}
+            <button
+            onClick={() => { setNewNGO(initialNGO); setShowAddNGO(true);}}
+            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200">
               Add New NGO
             </button>
           </div>
@@ -342,56 +425,43 @@ useEffect(() => {
 
         {/* Statistics Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500">
+              {/* <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500"> */}
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500
+transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <p className="text-gray-500 text-sm">Total NGOs</p>
                 <h3 className="text-3xl font-bold text-orange-600">5</h3>
               </div>
 
-              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-green-500">
+              {/* <div className="bg-white p-5 rounded-xl shadow border-l-4 border-green-500"> */}
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500
+transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <p className="text-gray-500 text-sm">Volunteers</p>
                 <h3 className="text-3xl font-bold text-green-600">120</h3>
               </div>
 
-              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-blue-500">
+              {/* <div className="bg-white p-5 rounded-xl shadow border-l-4 border-blue-500"> */}
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500
+transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <p className="text-gray-500 text-sm">Food Distributed</p>
                 <h3 className="text-3xl font-bold text-blue-600">2.4 Tons</h3>
               </div>
 
-              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-purple-500">
+              {/* <div className="bg-white p-5 rounded-xl shadow border-l-4 border-purple-500"> */}
+              <div className="bg-white p-5 rounded-xl shadow border-l-4 border-orange-500
+transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <p className="text-gray-500 text-sm">Families Served</p>
                 <h3 className="text-3xl font-bold text-purple-600">450</h3>
               </div>
             </div>
 
           {/* Tabs */}
-          <div className="flex items-center space-x-6 mb-6">
-            {/* <button
-              onClick={() => setActiveTab("ngos")}
-              className={`px-4 py-2 rounded-lg font-medium ${
-                activeTab === "ngos"
-                  ? "bg-orange-100 text-orange-600"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-            >
-              NGOs
-            </button> */}
-            {/* <button
-              onClick={() => setActiveTab("beneficiaries")}
-              className={`px-4 py-2 rounded-lg font-medium ${
-                activeTab === "beneficiaries"
-                  ? "bg-orange-100 text-orange-600"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-            >
-              Beneficiaries
-            </button> */}
-            
-            <div className="flex-1"></div>
+          {/* <div className="flex items-center space-x-6 mb-6"> */}
+          <div className="flex items-center justify-end gap-3 mb-6">
             
             {/* Filter 🔽*/}
 
-            <div className="relative">
-          <button
+            <div className="relative" ref={filterRef}>         
+            <button
             onClick={() => setShowFilter(!showFilter)}
             className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm text-gray-700 hover:bg-gray-100 hover:shadow-md"
           >
@@ -406,10 +476,16 @@ useEffect(() => {
                 <div
                   key={option}
                   onClick={() => {
+                    console.log(option);
                     setSelectedFilter(option);
                     setShowFilter(false);
                   }}
-                  className="p-3 hover:bg-gray-100 cursor-pointer"
+                  // className="p-3 hover:bg-gray-100 cursor-pointer"
+                  className={`p-3 cursor-pointer hover:bg-orange-100 ${
+                  selectedFilter === option
+                    ? "bg-orange-50 font-semibold text-orange-600"
+                    : ""}
+                      `}
                 >
                   {option}
                 </div>
@@ -421,11 +497,15 @@ useEffect(() => {
             
              {/* Sort */}
 
-            {/* <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50"> */}
-             <button className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm text-gray-700 hover:bg-gray-100 hover:shadow-md hover:text-black transition-all duration-200 cursor-pointer">
-              <FaSortAmountDown className="mr-2" />
-              Sort
-            </button>
+            <button
+            onClick={() =>
+              setSortType(sortType === "A-Z" ? "Z-A" : "A-Z")
+            }
+            className="flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl shadow-sm text-gray-700 hover:bg-gray-100 hover:shadow-md"
+          >
+            <FaSortAmountDown className="mr-2" />
+            Sort: {sortType}
+          </button>
           </div>
 
           {/* NGO List Section */}
@@ -462,10 +542,6 @@ useEffect(() => {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredNGOs.map((ngo, index) => (
                     <tr key={index} className="hover:bg-gray-50">
-                      {/* <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">{ngo.name}</div>
-                      </td> */}
-                    
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
 
@@ -511,44 +587,62 @@ useEffect(() => {
                           ))}
                         </div>
                       </td>
-                                             {/* <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                         <button 
-                          //  onClick={() => navigate("/ngo-profile")}
-                           onClick={() => navigate(`/ngo-profile/${index}`)}
-                           className="text-orange-600 hover:text-orange-900"
-                         >
-                           View Details
-                         </button>
-                       </td> */}
 
-                            {/* <td className="px-6 py-4 whitespace-nowrap">
-                              <button
-                                // onClick={() => navigate("/ngo-profile")}
-                                
-                                onClick={() => navigate(`/ngo-profile/${ngo.id}`)}
+                      <td className="px-6 py-4 whitespace-nowrap relative">
+                        <div className="flex items-center gap-3">
 
-                                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-all duration-200"
+                          <button
+                            onClick={() => navigate(`/ngo-profile/${ngo.id}`)}
+                            className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg"
+                          >
+                            View Profile →
+                          </button>
+
+                          {/* 3-dot button */}
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenMenu(openMenu === ngo.id ? null : ngo.id);
+                            }}
+                            className="text-gray-500 hover:text-black p-2"
+                          >
+                            <FaEllipsisV />
+                          </button>
+
+                          {openMenu === ngo.id && (
+                            <div
+                                className="absolute right-0 top-12 w-44 bg-white rounded-lg shadow-lg border z-50"
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                View Profile →
-                              </button>
-                            </td> */}
-
-                            <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="flex items-center gap-3">
 
                               <button
-                                onClick={() => navigate(`/ngo-profile/${ngo.id}`)}
-                                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg"
+                                onClick={() => {
+                                  handleEditNGO(ngo);
+                                  setOpenMenu(null);
+                                }}
+                                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100"
                               >
-                                View Profile →
+                                <FaEdit className="text-blue-500" />
+                                Edit NGO
                               </button>
 
-                              <button className="text-gray-500 hover:text-black">
-                                <FaEllipsisV />
+                              <button
+                                onClick={() => {
+                                  handleDeleteNGO(ngo.id);
+                                  setOpenMenu(null);
+                                }}
+                                className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 text-red-600"
+                              >
+                                <FaTrash />
+                                Delete NGO
                               </button>
 
                             </div>
-                          </td>
+                          )}
+
+                        </div>
+                      </td>
 
 
                     </tr>
@@ -556,9 +650,273 @@ useEffect(() => {
                 </tbody>
               </table>
             </div>
+
           </div>
         </div>
       </div>
+
+      {/* Add NGO Modal */}
+      {showAddNGO && (
+        <div
+            className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+            onClick={()=>{
+                setShowAddNGO(false);
+                setNewNGO(initialNGO);
+            }}
+            >
+          {/* <div className="bg-white w-[700px] rounded-2xl shadow-2xl p-6"> */}
+          <div
+            className="bg-white w-[900px] max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+
+            <h2 className="text-2xl font-bold mb-6">
+              Add New NGO
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4">
+
+              {/* NGO Name */}
+              <input
+                type="text"
+                placeholder="NGO Name *"
+                value={newNGO.name}
+                onChange={(e) =>
+                  setNewNGO({
+                    ...newNGO,
+                    name: e.target.value,
+                  })
+                }
+                className="border rounded-lg p-3"
+              />
+
+             {/* Registration */}
+              <input
+                type="text"
+                placeholder="Registration Number *"
+                value={newNGO.registration}
+                onChange={(e)=>
+                  setNewNGO({
+                    ...newNGO,
+                    registration:e.target.value,
+                  })
+                }
+                className="border rounded-lg p-3"
+              />
+
+              {/* Contact Person */}
+
+              <input
+                type="text"
+                placeholder="Authorized Contact Person Name *"
+                value={newNGO.contactPerson}
+                onChange={(e)=>
+                  setNewNGO({
+                    ...newNGO,
+                    contactPerson:e.target.value,
+                  })
+                }
+                className="border rounded-lg p-3"
+                />
+
+              {/* Email */}
+
+              <input
+                type="email"
+                placeholder="Email *"
+                value={newNGO.email}
+                onChange={(e)=>
+                  setNewNGO({
+                    ...newNGO,
+                    email:e.target.value,
+                  })
+                }
+                className="border rounded-lg p-3"
+              />
+
+              {/* Phone */}
+
+              <input
+                type="text"
+                placeholder="Mobile Number of Contact Person *"
+                value={newNGO.phone}
+                onChange={(e)=>
+                  setNewNGO({
+                    ...newNGO,
+                    phone:e.target.value,
+                  })
+                }
+                className="border rounded-lg p-3"
+              />
+
+              {/* Website */}
+              <input
+                type="text"
+                placeholder="Website *"
+                value={newNGO.website}
+                onChange={(e)=>
+                  setNewNGO({
+                    ...newNGO,
+                    website:e.target.value,
+                  })
+                }
+                className="border rounded-lg p-3"
+              />
+
+              {/* City */}
+              <input
+              type="text"
+              placeholder="City"
+              value={newNGO.city}
+              onChange={(e)=>
+                setNewNGO({
+                  ...newNGO,
+                  city:e.target.value,
+                })
+              }
+              className="border rounded-lg p-3"
+            />
+
+                {/* State */}
+              <Select
+                options={stateOptions}
+                placeholder="Select or Search State *"
+                value={
+                  stateOptions.find(
+                    (option) => option.value === newNGO.state
+                  ) || null
+                }
+                onChange={(selected) =>
+                  setNewNGO({
+                    ...newNGO,
+                    state: selected.value,
+                  })
+                }
+                isSearchable
+              />
+
+            </div>
+
+              {/* Description */}
+            <textarea
+              placeholder="NGO Description"
+              rows={4}
+              value={newNGO.description}
+              onChange={(e)=>
+                setNewNGO({
+                  ...newNGO,
+                  description:e.target.value,
+                })
+              }
+              className="border rounded-lg p-3 w-full mt-4"
+            />
+
+                {/* Volunteering Opportunities */}
+            <input
+              type="text"
+              placeholder="Food Sorting, Delivery Driver, Event Management"
+              value={newNGO.opportunities}
+              onChange={(e) =>
+                setNewNGO({
+                  ...newNGO,
+                  opportunities: e.target.value,
+                })
+              }
+              className="border rounded-lg p-3 w-full mt-4"
+            />
+
+
+            <div className="col-span-2">
+            <label className="block text-sm font-semibold mb-2">
+              NGO Logo
+            </label>
+
+            <label
+              htmlFor="logo"
+              className="border-2 border-dashed border-orange-300 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-orange-50 transition duration-300"
+            >
+              <div className="text-5xl mb-3">📁</div>
+
+              <p className="font-semibold text-gray-700">
+                Click to Upload NGO Logo
+              </p>
+
+              <p className="text-sm text-gray-500 mt-1">
+                PNG, JPG or JPEG (Max 2 MB)
+              </p>
+
+              <input
+                id="logo"
+                type="file"
+                className="hidden"
+                onChange={(e) =>
+                  setNewNGO({
+                    ...newNGO,
+                    logo: e.target.files[0],
+                  })
+                }
+              />
+            </label>
+
+            {newNGO.logo && (
+              <p className="mt-2 text-green-600 text-sm">
+                ✅ {newNGO.logo.name}
+              </p>
+            )}
+          </div>
+
+            <div className="flex justify-end gap-4 mt-6">
+
+             {/* Focus Areas */}
+            <div className="col-span-2">
+              <label className="block text-sm font-semibold mb-2">
+                Focus Areas *
+              </label>
+
+              <Select
+                isMulti
+                options={focusAreaOptions}
+                placeholder="Select Focus Areas"
+                value={focusAreaOptions.filter(option =>
+                  newNGO.focusAreas.includes(option.value)
+                )}
+                onChange={(selectedOptions) =>
+                  setNewNGO({
+                    ...newNGO,
+                    focusAreas: selectedOptions
+                      ? selectedOptions.map(option => option.value)
+                      : [],
+                  })
+                }
+              />
+            </div>
+
+              <button
+                // onClick={() => setShowAddNGO(false)}
+                onClick={() => {
+                  setNewNGO(initialNGO);
+                  setShowAddNGO(false);
+              }}
+                className="px-5 py-2 rounded-lg border"
+              >
+                Cancel
+              </button>
+
+              {/* Last button */}
+
+              <button
+              onClick={handleAddNGO}
+              className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600"
+            >
+              Add NGO
+            </button>
+
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
