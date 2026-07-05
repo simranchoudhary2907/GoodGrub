@@ -1,6 +1,8 @@
 import defaultNGOs from "../Data/ngoData";
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+// import React, { useState } from "react";
+import React, { useState} from "react";
+// import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 import {
@@ -22,6 +24,7 @@ import {
 
 const NGOProfile = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const safeValue = (val) => (val ? val : "0");
 
@@ -34,11 +37,28 @@ const NGOProfile = () => {
     (item) => item.id === Number(id)
   );
 
-  const [notes, setNotes] = useState(`• Follow up on volunteer training schedule
+  // notes
+const [notes, setNotes] = useState(() => {
+  const saved = localStorage.getItem(`notes_${id}`);
+
+  return (
+    saved ||
+    `• Follow up on volunteer training schedule
 • Coordinate delivery routes for next week
 • Check volunteer availability for weekend events
 • Update contact information in database
-• Schedule monthly review meeting`);
+• Schedule monthly review meeting`
+  );
+
+});
+
+// Save Notes
+  const handleSaveNotes = () => {
+  localStorage.setItem(`notes_${id}`, notes);
+  alert("Notes saved successfully!");
+};
+
+// const [showOpportunities, setShowOpportunities] = useState(false);
 
   // NGO Not Found
   if (!ngo) {
@@ -199,13 +219,21 @@ const NGOProfile = () => {
 
     <div className="flex flex-wrap gap-3">
 
-      <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center">
+      {/* <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center">
 
         <FaPhone className="mr-2" />
 
         Call NGO
 
-      </button>
+      </button> */}
+
+      <button
+      onClick={() => window.location.href = `tel:${ngo.contact?.phone}`}
+      className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center"
+    >
+      <FaPhone className="mr-2" />
+      Call NGO
+    </button>
 
       <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center">
 
@@ -368,7 +396,7 @@ const NGOProfile = () => {
 
     <h3 className="text-lg font-semibold text-gray-800 mb-4">
 
-      Volunteering Opportunities
+      Volunteer With This NGO
 
     </h3>
 
@@ -411,11 +439,23 @@ const NGOProfile = () => {
 
     </div>
 
-    <button className="text-green-600 hover:text-green-800 mt-4 font-medium">
+   <div className="flex gap-4 mt-5">
 
-      View All Opportunities →
+  <button
+    onClick={() => navigate("/volunteer-signup")}
+    className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg transition"
+  >
+    Become a Volunteer
+  </button>
 
-    </button>
+  <button
+    onClick={() => navigate("/volunteer-faqs")}
+    className="border border-green-500 text-green-600 hover:bg-green-50 px-5 py-2 rounded-lg transition"
+  >
+    Volunteer FAQs
+  </button>
+
+</div>
 
   </div>
 
@@ -430,13 +470,16 @@ const NGOProfile = () => {
   <textarea
     value={notes}
     onChange={(e) => setNotes(e.target.value)}
-    className="w-full h-32 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
+    className="w-full h-[250px] p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"
     placeholder="Add coordination notes..."
   />
 
-  <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 mt-3">
-    Save Notes
-  </button>
+<button
+  onClick={handleSaveNotes}
+  className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 mt-3"
+>
+  Save Notes
+</button>
 
 </div>
 
@@ -478,25 +521,46 @@ const NGOProfile = () => {
 
       </thead>
 
-      <tbody>
+<tbody>
 
-        <tr className="border-t">
+  {ngo.activities?.length ? (
 
-          <td className="px-6 py-4">
-            --
-          </td>
+    ngo.activities.map((activity, index) => (
 
-          <td className="px-6 py-4">
-            NGO Registered
-          </td>
+      <tr key={index} className="border-t hover:bg-gray-50">
 
-          <td className="px-6 py-4">
-            NGO profile created successfully.
-          </td>
+        <td className="px-6 py-4">
+          {activity.date}
+        </td>
 
-        </tr>
+        <td className="px-6 py-4">
+          {activity.type}
+        </td>
 
-      </tbody>
+        <td className="px-6 py-4">
+          {activity.description}
+        </td>
+
+      </tr>
+
+    ))
+
+  ) : (
+
+    <tr>
+
+      <td
+        colSpan="3"
+        className="text-center py-6 text-gray-500"
+      >
+        No recent activities available.
+      </td>
+
+    </tr>
+
+  )}
+
+</tbody>
 
     </table>
 
@@ -504,11 +568,65 @@ const NGOProfile = () => {
 
 </div>
 
+{/* Popup starts here */}
+
+{/* {showOpportunities && (
+  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div className="bg-white w-[500px] rounded-xl shadow-xl p-6">
+
+      <h2 className="text-2xl font-bold mb-5">
+        All Volunteering Opportunities
+      </h2>
+
+<div className="space-y-3">
+
+  {ngo.opportunities?.length ? (
+
+    ngo.opportunities.map((item, index) => (
+
+      <div
+        key={index}
+        className="flex items-center border rounded-lg p-3"
+      >
+        <span className="text-green-600 mr-3">✔</span>
+
+        <span>{item}</span>
+
+      </div>
+
+    ))
+
+  ) : (
+
+    <p className="text-gray-500">
+      No opportunities available.
+    </p>
+
+  )}
+
 </div>
+
+      <div className="flex justify-end mt-6">
+
+        <button
+          onClick={() => setShowOpportunities(false)}
+          className="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600"
+        >
+          Close
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)} */}
 
 </div>
 
 </div>
+
+</div>
+
 );
 };
 

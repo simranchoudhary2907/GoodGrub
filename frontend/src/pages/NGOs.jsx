@@ -361,6 +361,15 @@ const ngo = {
   opportunities: newNGO.opportunities
     .split(",")
     .map((item) => item.trim()),
+
+  activities: [
+  {
+    date: new Date().toLocaleDateString(),
+    type: "NGO Registered",
+    description: "NGO profile created successfully."
+  }
+],
+
 };
 
 
