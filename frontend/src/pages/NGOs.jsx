@@ -1,6 +1,6 @@
 import defaultNGOs from "../Data/ngoData";
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Select from "react-select";
 import { FaEllipsisV, FaEdit, FaTrash } from "react-icons/fa";
 
@@ -42,6 +42,13 @@ useEffect(() => {
   localStorage.setItem("ngoData", JSON.stringify(ngoData));
 }, [ngoData]);
 
+useEffect(() => {
+  if (location.state?.editNGO) {
+    handleEditNGO(location.state.editNGO);
+
+    navigate(location.pathname, { replace: true });
+  }
+}, [location.state]);
 
 const initialNGO = {
   name: "",
@@ -234,6 +241,7 @@ useEffect(() => {
 }, [ngoData]);
 
 
+
   const handleDeleteNGO = (id) => {
   if (window.confirm("Delete this NGO?")) {
     setNgoData((prev) => prev.filter((ngo) => ngo.id !== id));
@@ -303,6 +311,17 @@ const handleUpdateNGO = () => {
       opportunities: newNGO.opportunities
         .split(",")
         .map((item) => item.trim()),
+
+        activities: [
+      ...(ngo.activities || []),
+
+      {
+        date: new Date().toLocaleDateString(),
+        type: "Profile Updated",
+        description: `${newNGO.name} profile was updated.`,
+      },
+    ],
+
     };
   });
 
@@ -331,7 +350,6 @@ newNGO.focusAreas.length === 0) {
 }
 
 const ngo = {
-  // id: ngoData.length + 1,
   id: Date.now(),
   name: newNGO.name,
   registration: newNGO.registration,
@@ -366,7 +384,7 @@ const ngo = {
   {
     date: new Date().toLocaleDateString(),
     type: "NGO Registered",
-    description: "NGO profile created successfully."
+    description: `${newNGO.name} was registered successfully.`,
   }
 ],
 
@@ -508,13 +526,6 @@ const ngo = {
             </div>
             
             {/* Add New NGO Button */}
-
-            {/* <button
-            onClick={() => { setNewNGO(initialNGO); setShowAddNGO(true);}}
-            className="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 hover:shadow-lg hover:scale-105 transition-all duration-200">
-              Add New NGO
-            </button> */}
-
               <button
                 onClick={() => {
                   setIsEditing(false);
@@ -526,8 +537,6 @@ const ngo = {
               >
                 Add New NGO
               </button>
-
-
           </div>
         </div>
       </div>

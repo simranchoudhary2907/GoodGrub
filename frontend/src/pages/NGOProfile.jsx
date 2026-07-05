@@ -1,9 +1,9 @@
 import defaultNGOs from "../Data/ngoData";
-// import React, { useState } from "react";
 import React, { useState} from "react";
-// import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+// import EditNgoPopup from "../components/EditNgoPopup";
 
 import {
   FaBell,
@@ -22,9 +22,12 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 
-const NGOProfile = () => {
+  const NGOProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [selectedNgo, setSelectedNgo] = useState(null);
 
   const safeValue = (val) => (val ? val : "0");
 
@@ -38,7 +41,7 @@ const NGOProfile = () => {
   );
 
   // notes
-const [notes, setNotes] = useState(() => {
+  const [notes, setNotes] = useState(() => {
   const saved = localStorage.getItem(`notes_${id}`);
 
   return (
@@ -112,8 +115,14 @@ const [notes, setNotes] = useState(() => {
               <FaUserCircle size={20} />
             </button>
 
-            <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition flex items-center">
-              <FaEdit className="mr-2" />
+            <button
+             onClick={() => {
+              setSelectedNgo(ngo);
+              setShowEditPopup(true);
+            }}
+              className="bg-green-500 text-white px-4 py-2 rounded-lg"
+            >
+              <FaEdit className="inline mr-2" />
               Edit Profile
             </button>
 
@@ -218,14 +227,6 @@ const [notes, setNotes] = useState(() => {
     </p>
 
     <div className="flex flex-wrap gap-3">
-
-      {/* <button className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 flex items-center">
-
-        <FaPhone className="mr-2" />
-
-        Call NGO
-
-      </button> */}
 
       <button
       onClick={() => window.location.href = `tel:${ngo.contact?.phone}`}
@@ -569,57 +570,12 @@ const [notes, setNotes] = useState(() => {
 </div>
 
 {/* Popup starts here */}
-
-{/* {showOpportunities && (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-    <div className="bg-white w-[500px] rounded-xl shadow-xl p-6">
-
-      <h2 className="text-2xl font-bold mb-5">
-        All Volunteering Opportunities
-      </h2>
-
-<div className="space-y-3">
-
-  {ngo.opportunities?.length ? (
-
-    ngo.opportunities.map((item, index) => (
-
-      <div
-        key={index}
-        className="flex items-center border rounded-lg p-3"
-      >
-        <span className="text-green-600 mr-3">✔</span>
-
-        <span>{item}</span>
-
-      </div>
-
-    ))
-
-  ) : (
-
-    <p className="text-gray-500">
-      No opportunities available.
-    </p>
-
-  )}
-
-</div>
-
-      <div className="flex justify-end mt-6">
-
-        <button
-          onClick={() => setShowOpportunities(false)}
-          className="bg-orange-500 text-white px-5 py-2 rounded-lg hover:bg-orange-600"
-        >
-          Close
-        </button>
-
-      </div>
-
-    </div>
-  </div>
-)} */}
+{showEditPopup && selectedNgo && (
+  <EditNgoPopup
+    ngo={selectedNgo}
+    onClose={() => setShowEditPopup(false)}
+  />
+)}
 
 </div>
 

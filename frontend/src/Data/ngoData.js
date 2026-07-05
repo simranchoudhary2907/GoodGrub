@@ -29,6 +29,25 @@ const defaultNGOs = [
       "Delivery Driver",
       "Event Coordination",
     ],
+
+    activities: [
+  {
+    date: "15 Jul 2026",
+    type: "Food Distribution",
+    description: "Distributed 500 meals to underprivileged families."
+  },
+  {
+    date: "12 Jul 2026",
+    type: "Volunteer Training",
+    description: "Conducted volunteer orientation session."
+  },
+  {
+    date: "08 Jul 2026",
+    type: "Food Collection",
+    description: "Collected surplus food from local restaurants."
+  }
+],
+    
   },
 
   {
@@ -61,6 +80,24 @@ const defaultNGOs = [
       "Kitchen Prep",
       "Outreach",
     ],
+
+    activities: [
+  {
+    date: "14 Jul 2026",
+    type: "Community Garden",
+    description: "Started a new community garden project."
+  },
+  {
+    date: "10 Jul 2026",
+    type: "Kitchen Service",
+    description: "Prepared meals for homeless shelters."
+  },
+  {
+    date: "06 Jul 2026",
+    type: "Volunteer Recruitment",
+    description: "20 new volunteers joined the NGO."
+  }
+],
   },
 
   {
@@ -95,6 +132,24 @@ const defaultNGOs = [
       "Workshop Facilitator",
       "Collection Point Management",
     ],
+
+    activities: [
+  {
+    date: "16 Jul 2026",
+    type: "Awareness Campaign",
+    description: "Conducted food waste awareness workshop."
+  },
+  {
+    date: "11 Jul 2026",
+    type: "School Program",
+    description: "Educated students about food sustainability."
+  },
+  {
+    date: "07 Jul 2026",
+    type: "Food Collection",
+    description: "Collected excess food from hotels."
+  }
+],
   },
 
   {
@@ -129,6 +184,24 @@ const defaultNGOs = [
       "Packing Kits",
       "Distribution Support",
     ],
+
+    activities: [
+  {
+    date: "13 Jul 2026",
+    type: "Emergency Relief",
+    description: "Distributed emergency food kits."
+  },
+  {
+    date: "09 Jul 2026",
+    type: "Packing Drive",
+    description: "Packed food kits with volunteers."
+  },
+  {
+    date: "04 Jul 2026",
+    type: "Donation Camp",
+    description: "Organized community food donation drive."
+  }
+],
   },
 
   {
@@ -168,6 +241,11 @@ const defaultNGOs = [
 
 activities: [
   {
+    date: "17 Jul 2026",
+    type: "Meal Distribution",
+    description: "Delivered meals to 250 senior citizens."
+  },
+  {
     date: "12 Jul 2026",
     type: "Food Distribution",
     description: "Distributed 250 meals to families."
@@ -183,9 +261,6 @@ activities: [
     description: "Collected surplus food from restaurants."
   }
 ],
-
-
-
 
   },
 
